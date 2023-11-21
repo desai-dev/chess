@@ -8,11 +8,11 @@ enum class PType { Knight, Bishop, Rook, King, Queen, Pawn };
 
 class Piece : public Observer {
     public:
-        // Alert observors that there has been a change in state
-        void notifyObservors();
-        // Attach an observor to the piece
+        // Alert observers that there has been a change in state
+        void notifyObservers();
+        // Attach an observer to the piece
         void attach(Observer *o);
-        // Dettach an observor to the piece
+        // Dettach an observer to the piece
         void dettach(Observer * o);
 
         virtual std::pair<int, int>getLocation() = 0;
