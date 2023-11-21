@@ -15,10 +15,10 @@ class Piece : public Observer {
         // Dettach an observor to the piece
         void dettach(Observer * o);
 
-        virtual std::pair<int, int>getLocation();
-        virtual Colour getColour();
-        virtual bool isValid(int row, int col);
-        virtual PType getType();
+        virtual std::pair<int, int>getLocation() = 0;
+        virtual Colour getColour() = 0;
+        virtual bool isValid(int row, int col) = 0;
+        virtual PType getType() = 0;
 };
 
 #endif

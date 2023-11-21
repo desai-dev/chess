@@ -1,6 +1,6 @@
 #include "levelone.h"
 
-void LevelOne::nextMove() {
+void LevelOne::nextMove() const {
     // Calculate best move to make
 
     // Call Board's make move
