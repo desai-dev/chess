@@ -1,13 +1,12 @@
 #ifndef _OBSERVER_H_
 #define _OBSERVER_H_
-class Cell;
 
-enum class SubscriptionType { All, SwitchOnly };
+#include "piece.h"
 
 class Observer {
- public:
-  virtual void notify(Cell &c) = 0;  // c is the Cell that called the notify method
-  virtual SubscriptionType subType() = 0;
-  virtual ~Observer() = default;
+  public:
+    virtual void notify(Piece &p) = 0;  // p is the Piece that called the notify method
+    virtual ~Observer() = default;
 };
+
 #endif
