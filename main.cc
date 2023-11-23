@@ -1,6 +1,9 @@
-void makeMove() {
-    knight->isValid(e4, e7)
+#include <iostream>
+#include "textdisplay.h"
 
-    // blocking
-    
+using namespace std;
+
+int main() {
+    TextDisplay td;
+    cout << td;
 }

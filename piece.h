@@ -3,10 +3,13 @@
 #include "observer.h"
 #include <utility>
 
-enum class Colour { Black, White };
-enum class PType { Knight, Bishop, Rook, King, Queen, Pawn };
+// Forward declaration of Observer class
+class Observer;
 
-class Piece : public Observer {
+enum class Colour { Black, White, None };
+enum class PType { Knight, Bishop, Rook, King, Queen, Pawn, Empty };
+
+class Piece {
     public:
         // Alert observers that there has been a change in state
         void notifyObservers();

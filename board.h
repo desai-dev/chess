@@ -1,8 +1,8 @@
 #ifndef __BOARD_H__
 #define __BOARD_H__
 
-enum class Colour { Black, White };
-enum class PType { Knight, Bishop, Rook, King, Queen, Pawn };
+enum class Colour { Black, White, None };
+enum class PType { Knight, Bishop, Rook, King, Queen, Pawn, Empty };
 
 class Board {
     public:
