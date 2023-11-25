@@ -6,10 +6,8 @@
 class Knight : public Piece {
 
   public: 
-    std::pair<int, int>getLocation() override;
-    Colour getColour() override;
+    Knight(Colour colour);
     bool isValid(int row, int col) override;
-    PType getType() override;
 
 
 };

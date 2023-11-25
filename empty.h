@@ -1,16 +1,17 @@
-#ifndef __ROOK_H__
-#define __ROOK_H__
+#ifndef __EMPTY_H__
+#define __EMPTY_H__
 #include "piece.h"
 #include <utility>
 
-class Rook : public Piece {
+class Empty : public Piece {
 
   public: 
-    Rook(Colour colour);
+    Empty(Colour colour);
     bool isValid(int row, int col) override;
 
 
 };
+
 
 
 

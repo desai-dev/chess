@@ -6,10 +6,8 @@
 class Bishop : public Piece {
 
   public: 
-    std::pair<int, int>getLocation() override;
-    Colour getColour() override;
+    Bishop(Colour colour);
     bool isValid(int row, int col) override;
-    PType getType() override;
 
 
 };

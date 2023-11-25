@@ -4,13 +4,9 @@
 #include <utility>
 
 class King : public Piece {
-
   public: 
-    std::pair<int, int>getLocation() override;
-    Colour getColour() override;
+    King(Colour colour);
     bool isValid(int row, int col) override;
-    PType getType() override;
-
 
 };
 
