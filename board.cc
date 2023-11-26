@@ -12,11 +12,27 @@ using namespace std;
 
 Board::Board() : theBoard{vector<vector<Piece*>>(8, vector<Piece*>(8))}, td{nullptr} {}
 
-void Board::makeMove(int row, int col, Colour c) {
-    return;
+void Board::makeMove(int fromRow, int fromCol, int toRow, int toCol, Colour c) {
+    // if its a valid move, then make the move
+    if (theBoard[fromRow][fromCol]->isMoveValid(toRow, toCol)) {
+        // move piece to new position, and make old position empty
+        delete theBoard[toRow][toCol];
+        theBoard[toRow][toCol] = theBoard[fromRow][fromCol];
+        theBoard[fromRow][fromCol] = new Empty(Colour::None);
+        theBoard[fromRow][fromCol]->attach(td);
+
+        // update locations
+        theBoard[fromRow][fromCol]->setLocation(fromRow, fromCol);
+        theBoard[toRow][toCol]->setLocation(toRow, toCol);
+
+        // notify observers
+        theBoard[fromRow][fromCol]->notifyObservers();
+        theBoard[toRow][toCol]->notifyObservers();
+    }
 };
 
 void Board::init() {
+    // initialize members
     td = new TextDisplay{};
 
     // set empty squares
@@ -26,32 +42,32 @@ void Board::init() {
         }
     }
 
-    // set the white pieces
-    theBoard[0][0] = new Rook(Colour::White);
-    theBoard[0][1] = new Knight(Colour::White);
-    theBoard[0][2] = new Bishop(Colour::White);
-    theBoard[0][3] = new Queen(Colour::White);
-    theBoard[0][4] = new King(Colour::White);
-    theBoard[0][5] = new Bishop(Colour::White);
-    theBoard[0][6] = new Knight(Colour::White);
-    theBoard[0][7] = new Rook(Colour::White);
+    // set the black pieces
+    theBoard[0][0] = new Rook(Colour::Black);
+    theBoard[0][1] = new Knight(Colour::Black);
+    theBoard[0][2] = new Bishop(Colour::Black);
+    theBoard[0][3] = new Queen(Colour::Black);
+    theBoard[0][4] = new King(Colour::Black);
+    theBoard[0][5] = new Bishop(Colour::Black);
+    theBoard[0][6] = new Knight(Colour::Black);
+    theBoard[0][7] = new Rook(Colour::Black);
 
     for (int i = 0; i < gridSize; i++) {
-        theBoard[1][i] = new Pawn(Colour::White);
+        theBoard[1][i] = new Pawn(Colour::Black);
     }
 
-    // set the black pieces
-    theBoard[7][0] = new Rook(Colour::Black);
-    theBoard[7][1] = new Knight(Colour::Black);
-    theBoard[7][2] = new Bishop(Colour::Black);
-    theBoard[7][3] = new Queen(Colour::Black);
-    theBoard[7][4] = new King(Colour::Black);
-    theBoard[7][5] = new Bishop(Colour::Black);
-    theBoard[7][6] = new Knight(Colour::Black);
-    theBoard[7][7] = new Rook(Colour::Black);
+    // set the white pieces
+    theBoard[7][0] = new Rook(Colour::White);
+    theBoard[7][1] = new Knight(Colour::White);
+    theBoard[7][2] = new Bishop(Colour::White);
+    theBoard[7][3] = new Queen(Colour::White);
+    theBoard[7][4] = new King(Colour::White);
+    theBoard[7][5] = new Bishop(Colour::White);
+    theBoard[7][6] = new Knight(Colour::White);
+    theBoard[7][7] = new Rook(Colour::White);
 
     for (int i = 0; i < gridSize; i++) {
-        theBoard[6][i] = new Pawn(Colour::Black);
+        theBoard[6][i] = new Pawn(Colour::White);
     }
 
     // attatch observers and set location of pieces

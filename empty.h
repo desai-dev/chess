@@ -7,8 +7,9 @@ class Empty : public Piece {
 
   public: 
     Empty(Colour colour);
-    bool isValid(int row, int col) override;
-
+    // determines if move made on empty piece is valid
+    bool isMoveValid(int row, int col) override;
+    ~Empty() override;
 
 };
 

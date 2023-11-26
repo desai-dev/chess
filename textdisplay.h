@@ -12,11 +12,10 @@ class TextDisplay: public Observer {
 
     public:
         TextDisplay();
-
+        // update state based on new state of the piece
         void notify(Piece &p) override;
-
         ~TextDisplay();
-
+    // friend class so that it can have acess to private memeber theDisplay
     friend std::ostream &operator<<(std::ostream &out, const TextDisplay &td);
 };
 

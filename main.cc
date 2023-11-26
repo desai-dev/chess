@@ -5,8 +5,8 @@
 using namespace std;
 
 int main() {
-    TextDisplay td;
+    // sample makeMove
     Board b;
     b.init();
-    cout << td;
+    b.makeMove(1, 0, 3, 0, Colour::Black);
 }

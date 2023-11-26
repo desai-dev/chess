@@ -8,7 +8,8 @@ class Piece;
 
 class Observer {
   public:
-    virtual void notify(Piece &p) = 0;  // p is the Piece that called the notify method
+    // p is the Piece that called the notify method
+    virtual void notify(Piece &p) = 0;
     virtual ~Observer() = default;
 };
 

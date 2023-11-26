@@ -5,6 +5,7 @@ Piece::Piece() : observers{}, location{-1, -1}, colour{Colour::None}, type{PType
 Piece::Piece(Colour colour, PType type) : observers{}, location{-1, -1}, colour{colour}, type{type} {};
 
 void Piece::notifyObservers() {
+    // call the notify method for every observer
     for (Observer* o : observers) {
         o->notify(*this);
     }
@@ -30,3 +31,5 @@ void Piece::setLocation(int row, int col) {
     location.first = row;
     location.second = col;
 }
+
+Piece::~Piece() { }

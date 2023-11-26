@@ -7,7 +7,9 @@ class Pawn : public Piece {
 
   public: 
     Pawn(Colour colour);
-    bool isValid(int row, int col) override;
+    // determines if move made on pawn is valid
+    bool isMoveValid(int row, int col) override;
+    ~Pawn() override;
 
 
 };

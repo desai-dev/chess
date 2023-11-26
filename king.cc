@@ -2,6 +2,8 @@
 
 King::King(Colour colour) : Piece{colour, PType::King} {};
 
-bool King::isValid(int row, int col) {
+bool King::isMoveValid(int row, int col) {
     return true; // CHANGE LATER
 }
+
+King::~King() {}

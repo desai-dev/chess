@@ -7,8 +7,9 @@ class Bishop : public Piece {
 
   public: 
     Bishop(Colour colour);
-    bool isValid(int row, int col) override;
-
+    // determines if move made on bishop is valid
+    bool isMoveValid(int row, int col) override;
+    ~Bishop() override;
 
 };
 

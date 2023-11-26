@@ -2,6 +2,8 @@
 
 Rook::Rook(Colour colour) : Piece{colour, PType::Rook} {};
 
-bool Rook::isValid(int row, int col) {
+bool Rook::isMoveValid(int row, int col) {
     return true; // CHANGE LATER
 }
+
+Rook::~Rook() {}

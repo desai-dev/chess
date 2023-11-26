@@ -25,11 +25,15 @@ class Piece {
         // Attach an observer to the piece
         void attach(Observer *o);
 
+        // accessor and mutator funtions
         std::pair<int, int> getLocation();
         Colour getColour();
         PType getType();
         void setLocation(int row, int col);
-        virtual bool isValid(int row, int col) = 0;
+        
+        // virtual functions to be overridden
+        virtual bool isMoveValid(int row, int col) = 0;
+        virtual ~Piece() = 0;
 };
 
 #endif

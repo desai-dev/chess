@@ -1,0 +1,1 @@
+g++20i bishop.cc board.cc empty.cc king.cc knight.cc main.cc pawn.cc piece.cc queen.cc rook.cc textdisplay.cc
