@@ -17,7 +17,7 @@ class Board {
         // initializes board to a standard chess board
         void init();
         // sets piece at given row and coloumn to given piece type
-        void set(int row, int col, PType p);
+        void set(int row, int col, PType p, Colour c);
         // determines if a player has won
         bool isWon();
 };

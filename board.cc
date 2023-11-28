@@ -79,8 +79,34 @@ void Board::init() {
     }
 };
 
-void Board::set(int row, int col, PType p) {
-    return; // CHANGE LATER
+void Board::set(int row, int col, PType p, Colour c) {
+    // Delete old piece at [row][col]
+    delete theBoard[row][col];    
+    
+    // Create new piece at [row][col]
+    switch (p) {
+        case PType::King:
+            theBoard[row][col] = new King(c);
+            break;
+        case PType::Queen:
+            theBoard[row][col] = new Queen(c);
+            break;
+        case PType::Rook:
+            theBoard[row][col] = new Rook(c);
+            break;
+        case PType::Bishop:
+            theBoard[row][col] = new Bishop(c);
+            break;
+        case PType::Knight:
+            theBoard[row][col] = new Knight(c);
+            break;
+        case PType::Pawn:
+            theBoard[row][col] = new Pawn(c);
+            break;
+        default:
+            theBoard[row][col] = new Empty(c);
+            break;
+    }
 }
 
 bool Board::isWon() {
