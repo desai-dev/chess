@@ -107,6 +107,11 @@ void Board::set(int row, int col, PType p, Colour c) {
             theBoard[row][col] = new Empty(c);
             break;
     }
+
+    // Add observer, update location, notify observer
+        theBoard[row][col]->attach(td);
+        theBoard[row][col]->setLocation(row, col);
+        theBoard[row][col]->notifyObservers();
 }
 
 bool Board::isWon() {
