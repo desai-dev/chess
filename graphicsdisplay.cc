@@ -7,7 +7,11 @@ using namespace std;
 GraphicsDisplay::GraphicsDisplay(Xwindow &w) : win{w} {
     for (int i = 0; i < numCells*cellWidth; i += cellWidth) {
         for (int j = 0; j < numCells*cellWidth; j += cellWidth) {
-            win.fillRectangle(j, i, cellWidth, cellWidth);
+            if ((i / cellWidth + j / cellWidth) % 2 == 0) {
+                win.fillRectangle(j, i, cellWidth, cellWidth, 0);
+            } else {
+                win.fillRectangle(j, i, cellWidth, cellWidth);
+            }
         }
     }
 }
