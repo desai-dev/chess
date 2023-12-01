@@ -163,7 +163,7 @@ bool Board::checkValid() const {
 }
 
 int Board::getGameState(Colour c) {
-    return true; // CHANGE LATER
+    return 1; // CHANGE LATER
 };
 
 std::vector<std::vector<Piece*>> Board::getBoard() {
