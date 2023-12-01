@@ -31,6 +31,8 @@ class Board {
         // returns gridsize
         int getGridSize();
 
+        friend std::ostream &operator<<(std::ostream &out, const Board &b);
+
 };
 
 #endif
