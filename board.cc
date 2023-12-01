@@ -12,7 +12,7 @@ using namespace std;
 
 Board::Board() : theBoard{vector<vector<Piece*>>(8, vector<Piece*>(8))}, td{nullptr} {}
 
-void Board::makeMove(int fromRow, int fromCol, int toRow, int toCol, Colour c) {
+bool Board::makeMove(int fromRow, int fromCol, int toRow, int toCol, Colour c) {
     // if its a valid move, then make the move
     if (theBoard[fromRow][fromCol]->isMoveValid(toRow, toCol, *this)) {
         // move piece to new position, and make old position empty

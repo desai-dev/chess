@@ -1,6 +1,10 @@
 #include <iostream>
 #include "textdisplay.h"
 #include "board.h"
+#include "abstractcomputer.h"
+#include "levelone.h"
+#include "leveltwo.h"
+#include "levelthree.h"
 
 using namespace std;
 
@@ -42,9 +46,139 @@ PType getPType(string p) {
 }
 
 int main() {
+    cin.exceptions(ios::eofbit|ios::failbit);
     string cmd;
-    // sample makeMove
     Board b;
+    bool whiteTurn = true;
+    int whitePlayer, blackPlayer; // 0 = human, 1-4 = computer 1-4
+    double whiteScore = 0;
+    double blackScore = 0;
+    b.init();
+    LevelOne c1{};
+    LevelTwo c2{};
+    LevelThree c3{};
+
+    while (true) {
+        cin >> cmd;
+        if (cmd == "game") {
+            // Setup players
+            string wPlayer, bPlayer;
+            cin >> wPlayer;
+            if (wPlayer == "computer") {
+                int level = -1;
+                cin >> level;
+                whitePlayer = level;
+            } else if (wPlayer == "human") {
+                whitePlayer = 0;
+            }
+            cin >> bPlayer;
+            if (bPlayer == "computer") {
+                int level = -1;
+                cin >> level;
+                blackPlayer = level;
+            } else if (bPlayer == "human") {
+                blackPlayer = 0;
+            }
+            
+            // Start playing
+            while (true) {
+                cin >> cmd;
+                if (cmd == "resign") {
+                    if (whiteTurn) {
+                        ++blackScore;
+                    } else {
+                        ++whiteScore;
+                    }
+                    b.init();
+                    whiteTurn = true;
+                    break;
+                } else if (cmd == "move") {
+                    if (whiteTurn) {
+                        if (whitePlayer == 0) {
+                            string l1, l2;
+                            cin >> l1 >> l2;
+                            pair<int, int> loc1 = getCoord(l1);
+                            pair<int, int> loc2 = getCoord(l2);
+
+                            b.makeMove(loc1.first, loc2.second, loc2.first, loc2.second, Colour::White);
+                        } else if (whitePlayer == 1) {
+                            c1.nextMove(Colour::White, b);
+                        } else if (whitePlayer == 2) {
+                            c2.nextMove(Colour::White, b);
+                        } else if (whitePlayer == 3) {
+                            c3.nextMove(Colour::White, b);
+                        }
+                    } else {
+                        if (blackPlayer == 0) {
+                            string l1, l2;
+                            cin >> l1 >> l2;
+                            pair<int, int> loc1 = getCoord(l1);
+                            pair<int, int> loc2 = getCoord(l2);
+
+                            b.makeMove(loc1.first, loc2.second, loc2.first, loc2.second, Colour::Black);
+                        } else if (blackPlayer == 1) {
+                            c1.nextMove(Colour::Black, b);
+                        } else if (blackPlayer == 2) {
+                            c2.nextMove(Colour::Black, b);
+                        } else if (blackPlayer == 3) {
+                            c3.nextMove(Colour::Black, b);
+                        }
+                    }
+                }
+
+                // After a move, check if won and switch colours
+                int gameState;
+                if (whiteTurn) {
+                    gameState = b.getGameState(Colour::White);
+                } else {
+                    gameState = b.getGameState(Colour::Black);
+                }
+                
+                if (gameState = 1) { // Game is won
+                    if (whiteTurn) {
+                        whiteScore++;
+                    } else {
+                        blackScore++;
+                    }
+                    b.init();
+                    whiteTurn = true;
+                    break;
+                } else if (gameState = 2) { // Game is stalemate
+                    whiteScore += 0.5;
+                    blackScore += 0.5;
+                    b.init();
+                    whiteTurn = true;
+                    break;
+                }
+                
+
+                
+                    whiteTurn != whiteTurn;
+
+
+
+            }
+            
+
+
+
+
+
+        }
+
+
+    }
+
+
+
+
+
+
+
+
+
+    // sample makeMove
+    // Board b;
     b.init();
     b.makeMove(1, 0, 3, 0, Colour::Black);
 

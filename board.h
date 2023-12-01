@@ -13,7 +13,7 @@ class Board {
     public:
         Board();
         // makes a move to the piece at given row and coloumn; makes sure piece is of given colour
-        void makeMove(int fromRow, int fromCol, int toRow, int toCol, Colour c);
+        bool makeMove(int fromRow, int fromCol, int toRow, int toCol, Colour c);
         // initializes board to a standard chess board
         void init();
         // sets piece at given row and coloumn to given piece type
