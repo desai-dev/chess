@@ -18,12 +18,15 @@ class Board {
         void init();
         // sets piece at given row and coloumn to given piece type
         void set(int row, int col, PType p, Colour c);
+        // Checks if board is in a valid state or not for set
+        bool checkValid() const;
         // determines if a player has won
         bool isWon();
         // returns the 2D vector of Piece pointers
         std::vector<std::vector<Piece*>> getBoard();
         // returns gridsize
         int getGridSize();
+
 };
 
 #endif

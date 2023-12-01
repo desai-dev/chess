@@ -31,6 +31,15 @@ void Board::makeMove(int fromRow, int fromCol, int toRow, int toCol, Colour c) {
     }
 };
 
+std::vector<std::vector<Piece*>> Board::getBoard() {
+    return theBoard;
+}
+
+int Board::getGridSize() {
+    return gridSize;
+}
+
+
 void Board::init() {
     // initialize members
     td = new TextDisplay{};
@@ -112,6 +121,45 @@ void Board::set(int row, int col, PType p, Colour c) {
         theBoard[row][col]->attach(td);
         theBoard[row][col]->setLocation(row, col);
         theBoard[row][col]->notifyObservers();
+}
+
+bool Board::checkValid() const {
+    // Need to check 1 white king, 1 black king
+    // No pawns on first and last row
+    // Neither king is in check
+    int whiteKingNum = 0;
+    int blackKingNum = 0;
+    bool pawnEndRows = false;
+    bool whiteKingCheck = false;
+    bool blackKingCheck = false;
+
+    for (int i = 0; i < gridSize; ++i) {
+        for (int j = 0; j < gridSize; ++j) {
+            if (theBoard[i][j]->getType() == PType::King) {
+                if (theBoard[i][j]->getColour() == Colour::White) {
+                    whiteKingNum++;
+                } else if (theBoard[i][j]->getColour() == Colour::Black) {
+                    blackKingNum++;
+                }
+            }
+        }
+    }
+
+    for (int i = 0; i < gridSize; ++i) {
+        if (theBoard[0][i]->getType() == PType::Pawn) {
+            pawnEndRows = true;
+        } else if (theBoard[gridSize - 1][i]->getType() == PType::Pawn) {
+            pawnEndRows = true;
+        }
+    }
+
+    if (pawnEndRows || whiteKingNum != 1 || blackKingNum != 1) {
+        return false;
+    }
+
+
+
+
 }
 
 bool Board::isWon() {
