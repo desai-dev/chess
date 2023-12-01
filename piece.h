@@ -8,7 +8,7 @@
 class Observer;
 class Board;
 
-enum class Colour { Black, White, None };
+enum class Colour { Black, White, Empty };
 enum class PType { Knight, Bishop, Rook, King, Queen, Pawn, Empty };
 
 class Piece {

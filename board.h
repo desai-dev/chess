@@ -4,11 +4,15 @@
 #include <vector>
 #include "piece.h"
 #include "textdisplay.h"
+#include "graphicsdisplay.h"
+#include "window.h"
 
 class Board {
     std::vector<std::vector<Piece*>> theBoard;
     const int gridSize = 8;
     TextDisplay *td;
+    GraphicsDisplay *gd;
+    Xwindow win;
 
     public:
         Board();

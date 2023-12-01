@@ -210,7 +210,7 @@ int main() {
             } else if (option == "-") { // Delete piece (set to empty)
                 cin >> secondArg;
                 pair<int, int> loc = getCoord(secondArg);
-                b.set(loc.first, loc.second, PType::Empty, Colour::None);
+                b.set(loc.first, loc.second, PType::Empty, Colour::Empty);
             } else if (option == "=") { // Set colour to make next move
                 cin >> secondArg;
                 // SET COLOUR TO GO NEXT TURN HERE

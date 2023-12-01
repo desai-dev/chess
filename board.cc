@@ -10,7 +10,7 @@
 
 using namespace std;
 
-Board::Board() : theBoard{vector<vector<Piece*>>(8, vector<Piece*>(8))}, td{nullptr} {}
+Board::Board() : theBoard{vector<vector<Piece*>>(8, vector<Piece*>(8))}, td{nullptr}, gd{nullptr}, win{} {}
 
 bool Board::makeMove(int fromRow, int fromCol, int toRow, int toCol, Colour c) {
     // if its a valid move, then make the move
@@ -18,8 +18,9 @@ bool Board::makeMove(int fromRow, int fromCol, int toRow, int toCol, Colour c) {
         // move piece to new position, and make old position empty
         delete theBoard[toRow][toCol];
         theBoard[toRow][toCol] = theBoard[fromRow][fromCol];
-        theBoard[fromRow][fromCol] = new Empty(Colour::None);
+        theBoard[fromRow][fromCol] = new Empty(Colour::Empty);
         theBoard[fromRow][fromCol]->attach(td);
+        theBoard[fromRow][fromCol]->attach(gd);
 
         // update locations
         theBoard[fromRow][fromCol]->setLocation(fromRow, fromCol);
@@ -43,11 +44,12 @@ int Board::getGridSize() {
 void Board::init() {
     // initialize members
     td = new TextDisplay{};
+    gd = new GraphicsDisplay{win};
 
     // set empty squares
     for (int i = 2; i < gridSize - 2; i++) {
         for (int j = 0; j < gridSize; j++) {
-            theBoard[i][j] = new Empty(Colour::None);
+            theBoard[i][j] = new Empty(Colour::Empty);
         }
     }
 
@@ -84,6 +86,7 @@ void Board::init() {
         for (int j = 0; j < gridSize; j++) {
             theBoard[i][j]->setLocation(i, j);
             theBoard[i][j]->attach(td);
+            theBoard[i][j]->attach(gd);
         }
     }
 };
@@ -119,6 +122,7 @@ void Board::set(int row, int col, PType p, Colour c) {
 
     // Add observer, update location, notify observer
         theBoard[row][col]->attach(td);
+        theBoard[row][col]->attach(gd);
         theBoard[row][col]->setLocation(row, col);
         theBoard[row][col]->notifyObservers();
 }
@@ -157,20 +161,9 @@ bool Board::checkValid() const {
         return false;
     }
 
-
-
-
+    return true;
 }
 
 int Board::getGameState(Colour c) {
     return 1; // CHANGE LATER
 };
-
-std::vector<std::vector<Piece*>> Board::getBoard() {
-    return theBoard;
-}
-
-int Board::getGridSize() {
-    return gridSize;
-}
-
