@@ -162,7 +162,7 @@ bool Board::checkValid() const {
 
 }
 
-bool Board::isWon() {
+int Board::getGameState(Colour c) {
     return true; // CHANGE LATER
 };
 

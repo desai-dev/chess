@@ -21,7 +21,7 @@ class Board {
         // Checks if board is in a valid state or not for set
         bool checkValid() const;
         // determines if a player has won
-        bool isWon();
+        int getGameState(Colour c);
         // returns the 2D vector of Piece pointers
         std::vector<std::vector<Piece*>> getBoard();
         // returns gridsize
