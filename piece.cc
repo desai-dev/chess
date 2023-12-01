@@ -1,7 +1,7 @@
 #include "piece.h"
 #include "board.h"
 
-Piece::Piece() : observers{}, location{-1, -1}, colour{Colour::None}, type{PType::Empty} {};
+Piece::Piece() : observers{}, location{-1, -1}, colour{Colour::Empty}, type{PType::Empty} {};
 
 Piece::Piece(Colour colour, PType type) : observers{}, location{-1, -1}, colour{colour}, type{type} {};
 
