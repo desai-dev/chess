@@ -164,6 +164,6 @@ bool Board::checkValid() const {
     return true;
 }
 
-bool Board::isWon() {
-    return true; // CHANGE LATER
+int Board::getGameState(Colour c) {
+    return 1; // CHANGE LATER
 };
