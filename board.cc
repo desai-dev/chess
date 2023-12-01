@@ -30,6 +30,7 @@ bool Board::makeMove(int fromRow, int fromCol, int toRow, int toCol, Colour c) {
         theBoard[fromRow][fromCol]->notifyObservers();
         theBoard[toRow][toCol]->notifyObservers();
     }
+    return true;
 };
 
 std::vector<std::vector<Piece*>> Board::getBoard() {
@@ -165,5 +166,10 @@ bool Board::checkValid() const {
 }
 
 int Board::getGameState(Colour c) {
-    return 1; // CHANGE LATER
+    return 0; // CHANGE LATER
 };
+
+ostream &operator<<(ostream &out, const Board &b) {
+    out << *b.td;
+    return out;
+}

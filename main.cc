@@ -13,13 +13,14 @@ pair<int, int> getCoord(string loc) {
     if(loc.length() != 2) return {-1, -1};
     int row, col;
     if (isupper(loc[0])) { // Check if first letter is upper/lowercase
-        row = loc[0] - 'A';
+        col = loc[0] - 'A';
     } else {
-        row = loc[0] - 'a';
+        col = loc[0] - 'a';
     }
     
     // Extra -1 since chess board coords are 1-8
-    col = loc[1] - '0' - 1;
+    row = loc[1] - '0' - 1;
+    row = abs(loc[1] - '0' - 8);
 
     return {row, col};
 }
@@ -83,6 +84,7 @@ int main() {
             // Start playing
             while (true) {
                 cin >> cmd;
+                bool validMove = true;
                 if (cmd == "resign") {
                     if (whiteTurn) {
                         ++blackScore;
@@ -100,7 +102,7 @@ int main() {
                             pair<int, int> loc1 = getCoord(l1);
                             pair<int, int> loc2 = getCoord(l2);
 
-                            b.makeMove(loc1.first, loc2.second, loc2.first, loc2.second, Colour::White);
+                            validMove = b.makeMove(loc1.first, loc1.second, loc2.first, loc2.second, Colour::White);
                         } else if (whitePlayer == 1) {
                             c1.nextMove(Colour::White, b);
                         } else if (whitePlayer == 2) {
@@ -115,7 +117,7 @@ int main() {
                             pair<int, int> loc1 = getCoord(l1);
                             pair<int, int> loc2 = getCoord(l2);
 
-                            b.makeMove(loc1.first, loc2.second, loc2.first, loc2.second, Colour::Black);
+                            validMove = b.makeMove(loc1.first, loc1.second, loc2.first, loc2.second, Colour::Black);
                         } else if (blackPlayer == 1) {
                             c1.nextMove(Colour::Black, b);
                         } else if (blackPlayer == 2) {
@@ -125,6 +127,13 @@ int main() {
                         }
                     }
                 }
+                cout << b;
+
+                if (!validMove) { // If the move is invalid, don't do any checks and don't change the colour
+                    cout << "Move was invalid, please try again" << endl;
+                    continue;
+                }
+                
 
                 // After a move, check if won and switch colours
                 int gameState;
@@ -134,7 +143,7 @@ int main() {
                     gameState = b.getGameState(Colour::Black);
                 }
                 
-                if (gameState = 1) { // Game is won
+                if (gameState == 1) { // Game is won
                     if (whiteTurn) {
                         whiteScore++;
                     } else {
@@ -143,18 +152,15 @@ int main() {
                     b.init();
                     whiteTurn = true;
                     break;
-                } else if (gameState = 2) { // Game is stalemate
+                } else if (gameState == 2) { // Game is stalemate
                     whiteScore += 0.5;
                     blackScore += 0.5;
                     b.init();
                     whiteTurn = true;
                     break;
                 }
-                
 
-                
-                    whiteTurn != whiteTurn;
-
+                whiteTurn = !whiteTurn;
 
 
             }
@@ -164,6 +170,49 @@ int main() {
 
 
 
+        } else if (cmd == "setup") {
+            string option;
+            string secondArg;
+            while (option != "done") {
+                cin >> option;
+                if (option == "+") {
+                    string location;
+                    cin >> secondArg >> location;
+                    pair<int, int> loc = getCoord(location);
+                    if (isupper(secondArg[0])) {
+                        b.set(loc.first, loc.second, getPType(secondArg), Colour::White);
+                    } else {
+                        b.set(loc.first, loc.second, getPType(secondArg), Colour::Black);
+                    }
+                    cout << b;
+                } else if (option == "-") { // Delete piece (set to empty)
+                    cin >> secondArg;
+                    pair<int, int> loc = getCoord(secondArg);
+                    b.set(loc.first, loc.second, PType::Empty, Colour::Empty);
+                    cout << b;
+                } else if (option == "=") { // Set colour to make next move
+                    cin >> secondArg;
+                    if (secondArg == "black") {
+                        whiteTurn = false;
+                    } else {
+                        whiteTurn = true;
+                    }
+
+                } else if (option == "done") { // Exit setup mode [NEED TO CHECK IF VALID StATE OR NOT]
+                    cout << b;
+                    if (b.checkValid()) {
+                        break;
+                    } else {
+                        cout << "Board is in invalid state. Board must contain exactly one white king and exactly one black king, " <<
+                        "that no pawns are on the first or last row of the board, and that neither king is in check" << endl;
+                    }
+                    
+                } else { // Invalid command, get the line to clear buffer and restart (not sure if buffer needs to be cleared)
+                    getline(cin, option);
+                    cout << "Please re-enter a command in setup mode:" << endl;
+                }
+            }
+            
         }
 
 
