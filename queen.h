@@ -8,7 +8,7 @@ class Queen : public Piece {
   public: 
     Queen(Colour colour);
     // determines if move made on queen is valid
-    bool isMoveValid(int row, int col) override;
+    bool isMoveValid(int row, int col, Board &b) override;
     ~Queen() override;
 
 };

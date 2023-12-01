@@ -6,6 +6,7 @@
 
 // Forward declaration of Observer class
 class Observer;
+class Board;
 
 enum class Colour { Black, White, None };
 enum class PType { Knight, Bishop, Rook, King, Queen, Pawn, Empty };
@@ -24,7 +25,7 @@ class Piece {
         void notifyObservers();
         // Attach an observer to the piece
         void attach(Observer *o);
-
+        bool isEmpty();
         // accessor and mutator funtions
         std::pair<int, int> getLocation();
         Colour getColour();
@@ -32,7 +33,7 @@ class Piece {
         void setLocation(int row, int col);
         
         // virtual functions to be overridden
-        virtual bool isMoveValid(int row, int col) = 0;
+        virtual bool isMoveValid(int row, int col, Board &b) = 0;
         virtual ~Piece() = 0;
 };
 

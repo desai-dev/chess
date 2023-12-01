@@ -8,7 +8,7 @@ class Rook : public Piece {
   public: 
     Rook(Colour colour);
     // determines if move made on rook is valid
-    bool isMoveValid(int row, int col) override;
+    bool isMoveValid(int row, int col, Board &b) override;
     ~Rook() override;
 
 };

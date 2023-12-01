@@ -14,7 +14,7 @@ Board::Board() : theBoard{vector<vector<Piece*>>(8, vector<Piece*>(8))}, td{null
 
 void Board::makeMove(int fromRow, int fromCol, int toRow, int toCol, Colour c) {
     // if its a valid move, then make the move
-    if (theBoard[fromRow][fromCol]->isMoveValid(toRow, toCol)) {
+    if (theBoard[fromRow][fromCol]->isMoveValid(toRow, toCol, *this)) {
         // move piece to new position, and make old position empty
         delete theBoard[toRow][toCol];
         theBoard[toRow][toCol] = theBoard[fromRow][fromCol];
@@ -117,3 +117,12 @@ void Board::set(int row, int col, PType p, Colour c) {
 bool Board::isWon() {
     return true; // CHANGE LATER
 };
+
+std::vector<std::vector<Piece*>> Board::getBoard() {
+    return theBoard;
+}
+
+int Board::getGridSize() {
+    return gridSize;
+}
+

@@ -20,6 +20,10 @@ class Board {
         void set(int row, int col, PType p, Colour c);
         // determines if a player has won
         bool isWon();
+        // returns the 2D vector of Piece pointers
+        std::vector<std::vector<Piece*>> getBoard();
+        // returns gridsize
+        int getGridSize();
 };
 
 #endif

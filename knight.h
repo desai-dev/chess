@@ -8,7 +8,7 @@ class Knight : public Piece {
   public: 
     Knight(Colour colour);
     // determines if move made on knight is valid
-    bool isMoveValid(int row, int col) override;
+    bool isMoveValid(int row, int col, Board &b) override;
     ~Knight() override;
 
 };

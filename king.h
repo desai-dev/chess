@@ -7,7 +7,7 @@ class King : public Piece {
   public: 
     King(Colour colour);
     // determines if move made on king is valid
-    bool isMoveValid(int row, int col) override;
+    bool isMoveValid(int row, int col, Board &b) override;
     ~King() override;
 };
 

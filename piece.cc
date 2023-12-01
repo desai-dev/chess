@@ -1,4 +1,5 @@
 #include "piece.h"
+#include "board.h"
 
 Piece::Piece() : observers{}, location{-1, -1}, colour{Colour::None}, type{PType::Empty} {};
 
@@ -13,6 +14,10 @@ void Piece::notifyObservers() {
 
 void Piece::attach(Observer *o) {
   observers.emplace_back(o);
+}
+
+bool Piece::isEmpty() {
+    return (type == PType::Empty) ? true : false;
 }
 
 std::pair<int, int> Piece::getLocation() {
