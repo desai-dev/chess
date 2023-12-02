@@ -14,6 +14,50 @@ GraphicsDisplay::GraphicsDisplay(Xwindow &w) : win{w} {
             }
         }
     }
+
+    // draw white pawns
+    for (int i = 0; i < numCells*cellWidth; i += cellWidth) {
+        win.drawPawn(i, 420, 3);
+    }
+    // draw white pawns
+    for (int i = 0; i < numCells*cellWidth; i += cellWidth) {
+        win.drawPawn(i, 70, 2);
+    }
+    // draw white rooks
+    win.drawRook(0, 490, 3);
+    win.drawRook(490, 490, 3);
+
+    // draw black rooks
+    win.drawRook(0, 0, 2);
+    win.drawRook(490, 0, 2);
+
+    // draw white knights
+    win.drawKnight(70, 490, 3);
+    win.drawKnight(420, 490, 3);
+
+    // draw black kights
+    win.drawKnight(70, 0, 2);
+    win.drawKnight(420, 0, 2);
+
+    // draw white bishops
+    win.drawBishop(140, 490, 3);
+    win.drawBishop(350, 490, 3);
+    
+    // draw black bishops
+    win.drawBishop(140, 0, 2);
+    win.drawBishop(350, 0, 2);
+
+    // draw white queen
+    win.drawQueen(210, 490, 3);
+    
+    // draw black queen
+    win.drawQueen(210, 0, 2);
+
+    // draw white king
+    win.drawKing(280, 490, 3);
+    
+    // draw black king
+    win.drawKing(280, 0, 2);
 }
 
 // draw a black rectangle if new state is off, otherwise draw a white rectangle
