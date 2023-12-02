@@ -67,7 +67,7 @@ TextDisplay::~TextDisplay() {}
 ostream &operator<<(ostream &out, const TextDisplay &td) {
   // print out the board, adding a newline at the end of each row
   for (int i = 0; i < td.boardSize; ++i) {
-    out << i+1 << " ";
+    out << 8-i << " ";
     for (int j = 0; j < td.boardSize; ++j) {
       out << td.theDisplay[i][j];
       if (j == td.boardSize - 1) out << endl;

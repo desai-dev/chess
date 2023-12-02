@@ -38,7 +38,7 @@ bool King::isMoveValid(int row, int col, Board &b) {
 
 
     // the move is valid if none of the above conditions are true
-    return true;
+    return false;
 }
 
 King::~King() {}
