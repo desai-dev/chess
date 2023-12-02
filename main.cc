@@ -166,10 +166,6 @@ int main() {
             }
             
 
-
-
-
-
         } else if (cmd == "setup") {
             string option;
             string secondArg;

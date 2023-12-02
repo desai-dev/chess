@@ -1,6 +1,9 @@
 #ifndef __LEVELTWO_H__
 #define __LEVELTWO_H__
 #include "abstractcomputer.h"
+#include "board.h"
+#include "piece.h"
+#include <vector>
 
 class LevelTwo : public AbstractComputer {
 
