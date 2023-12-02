@@ -26,7 +26,7 @@ bool Queen::isMoveValid(int row, int col, Board &b) {
     int rowDifference = row - currentRow;
     int colDifference = col - currentCol;
 
-    if ((rowDifference != colDifference && rowDifference != -colDifference) || (row != currentRow && col != currentCol)) {
+    if ((rowDifference != colDifference && rowDifference != -colDifference) && (row != currentRow && col != currentCol)) {
         return false;
     }
 
