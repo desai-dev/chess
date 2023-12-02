@@ -88,8 +88,10 @@ int main() {
                 if (cmd == "resign") {
                     if (whiteTurn) {
                         ++blackScore;
+                        cout << endl << "Black wins!" << endl;
                     } else {
                         ++whiteScore;
+                        cout << endl << "White wins!" << endl;
                     }
                     b.init();
                     whiteTurn = true;
@@ -164,7 +166,11 @@ int main() {
 
 
             }
-            
+            // End of game, print scores
+            cout << "GAME FINISHED, SCORES:" << endl; 
+            cout << "White: " << whiteScore << endl;
+            cout << "Black: " << blackScore << endl << endl; 
+
 
         } else if (cmd == "setup") {
             string option;
@@ -209,6 +215,12 @@ int main() {
                 }
             }
             
+        } else if (cmd == "clear") {
+            b.clear();
+            cout << b;
+        } else if (cmd == "init") {
+            b.init();
+            cout << b;
         }
 
 
