@@ -1,5 +1,6 @@
 #include "king.h"
 #include "board.h"
+#include "empty.h"
 
 using namespace std;
 
@@ -100,16 +101,23 @@ bool King::isMoveValid(int row, int col, Board &b) {
     }
 
     // make sure king does not move into check (including the case that the king captures into a check) excluding opposite king check
-    Board tmp = b;
-    // for(int i = 0; i < b.getGridSize(); i++) {
-    //     for(int j = 0; j < b.getGridSize(); j++) {
-    //         // if a piece of the opposite colour can move to where the king wants to move, then the move is invalid
-    //         if (!theBoard[i][j]->isEmpty() && (theBoard[i][j]->getColour() != this->getColour()) 
-    //             && theBoard[i][j]->isMoveValid(row, col, b) && theBoard[i][j]->getType() != PType::King) {
-    //             return false;
-    //         }
-    //     }
-    // }
+    Piece* tmp = theBoard[row][col];
+    theBoard[row][col] = theBoard[currentRow][currentCol];
+    theBoard[currentRow][currentCol] = new Empty(Colour::Empty);
+    theBoard[row][col]->setLocation(row, col);
+    theBoard[currentRow][currentCol]->setLocation(currentRow, currentCol);
+    bool isInCheck = IsInCheck(row, col, b);
+
+    delete theBoard[currentRow][currentCol];
+    theBoard[currentRow][currentCol] = theBoard[row][col];
+    theBoard[row][col] = tmp;
+    theBoard[currentRow][currentCol]->setLocation(currentRow, currentCol);
+    tmp = nullptr;
+
+    if (isInCheck) {
+        return false;
+    }
+
     // the move is valid if none of the above conditions are true
     return false;
 }

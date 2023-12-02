@@ -12,6 +12,19 @@ using namespace std;
 
 Board::Board() : theBoard{vector<vector<Piece*>>(8, vector<Piece*>(8))}, td{nullptr}, gd{nullptr}, win{} {}
 
+Board::~Board() {
+    // delete text and graphics displays
+    delete td;
+    delete gd;
+
+    // delete pieces
+    for (int i = 0; i < gridSize; i++) {
+        for (int j = 0; j < gridSize; j++) {
+            delete theBoard[i][j];
+        }
+    }
+}
+
 bool Board::makeMove(int fromRow, int fromCol, int toRow, int toCol, Colour c) {
     // if its a valid move, then make the move
     if (theBoard[fromRow][fromCol]->isMoveValid(toRow, toCol, *this)) {
