@@ -71,26 +71,25 @@ void GraphicsDisplay::notify(Piece &p) {
 
     // update display based on the new location of the piece
     if (t == PType::Knight) {
-        win.drawKnight(loc.first*cellWidth, loc.second*cellWidth, colour);
+        win.drawKnight(loc.second*cellWidth, loc.first*cellWidth, colour);
     } else if (t == PType::Bishop) {
-        win.drawBishop(loc.first*cellWidth, loc.second*cellWidth, colour);
+        win.drawBishop(loc.second*cellWidth, loc.first*cellWidth, colour);
     } else if (t == PType::Rook) {
-        win.drawRook(loc.first*cellWidth, loc.second*cellWidth, colour);
+        win.drawRook(loc.second*cellWidth, loc.first*cellWidth, colour);
     } else if (t == PType::King) {
-        win.drawKing(loc.first*cellWidth, loc.second*cellWidth, colour);
+        win.drawKing(loc.second*cellWidth, loc.first*cellWidth, colour);
     } else if (t == PType::Queen) {
-        win.drawQueen(loc.first*cellWidth, loc.second*cellWidth, colour);
+        win.drawQueen(loc.second*cellWidth, loc.first*cellWidth, colour);
     } else if (t == PType::Pawn) {
-        win.drawPawn(loc.first*cellWidth, loc.second*cellWidth, colour);
+        win.drawPawn(loc.second*cellWidth, loc.first*cellWidth, colour);
     } else {
         if ((loc.first + loc.second) % 2 == 0) {
             // change colour for white tile
             colour = 0;
-            win.fillRectangle(loc.first*cellWidth, loc.second*cellWidth, cellWidth, cellWidth, colour);
+            win.fillRectangle(loc.second*cellWidth, loc.first*cellWidth, cellWidth, cellWidth, colour);
         } else {
             // change colour for black tile
-            colour = 1;
-            win.fillRectangle(loc.first*cellWidth, loc.second*cellWidth, cellWidth, cellWidth, colour);
+            win.fillRectangle(loc.second*cellWidth, loc.first*cellWidth, cellWidth, cellWidth);
         }
     }
 };
