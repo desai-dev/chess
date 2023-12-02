@@ -55,11 +55,18 @@ bool Rook::isMoveValid(int row, int col, Board &b) {
 
     // Check if the destination square is occupied by a same colour piece
     if (theBoard[row][col]->getColour() == this->getColour()) {
+        
         return false;
     }
 
     return true;
 }
 
+bool Rook::getHasMoved() const{
+    return hasMoved;
+}
+void Rook::setHasMoved(){
+    hasMoved = true;
+}
 
 Rook::~Rook() {}

@@ -37,4 +37,8 @@ void Piece::setLocation(int row, int col) {
     location.second = col;
 }
 
+bool Piece::getHasMoved() const{
+    return true;
+}
+
 Piece::~Piece() { }

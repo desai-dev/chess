@@ -35,6 +35,7 @@ class Piece {
         // virtual functions to be overridden
         virtual bool isMoveValid(int row, int col, Board &b) = 0;
         virtual ~Piece() = 0;
+        virtual bool getHasMoved() const;
 };
 
 #endif
