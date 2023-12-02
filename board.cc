@@ -178,6 +178,33 @@ bool Board::checkValid() const {
     return true;
 }
 
+void Board::clear() {
+    // set empty squares
+    for (int i = 0; i < gridSize; i++) {
+        for (int j = 0; j < gridSize; j++) {
+            delete theBoard[i][j];
+            theBoard[i][j] = new Empty(Colour::Empty);
+        }
+    }
+    // Set kings
+    delete theBoard[0][4];
+    delete theBoard[7][4];
+    theBoard[0][4] = new King(Colour::Black);
+    theBoard[7][4] = new King(Colour::White);
+
+    // attatch observers and set location of pieces
+    for (int i = 0; i < gridSize; i++) {
+        for (int j = 0; j < gridSize; j++) {
+            theBoard[i][j]->setLocation(i, j);
+            theBoard[i][j]->attach(td);
+            theBoard[i][j]->attach(gd);
+            theBoard[i][j]->notifyObservers();
+        }
+    }
+    
+
+}
+
 int Board::getGameState(Colour c) {
     return 0; // CHANGE LATER
 };

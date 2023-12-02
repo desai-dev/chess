@@ -31,6 +31,8 @@ class Board {
         std::vector<std::vector<Piece*>> getBoard();
         // returns gridsize
         int getGridSize();
+        // Clears board (leaves 2 kings)
+        void clear();
 
         friend std::ostream &operator<<(std::ostream &out, const Board &b);
 
