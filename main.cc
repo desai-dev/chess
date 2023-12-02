@@ -140,9 +140,9 @@ int main() {
                 // After a move, check if won and switch colours
                 int gameState;
                 if (whiteTurn) {
-                    gameState = b.getGameState(Colour::White);
-                } else {
                     gameState = b.getGameState(Colour::Black);
+                } else {
+                    gameState = b.getGameState(Colour::White);
                 }
                 
                 if (gameState == 1) { // Game is won
@@ -160,6 +160,12 @@ int main() {
                     b.init();
                     whiteTurn = true;
                     break;
+                } else if (gameState == 3) {
+                    if (whiteTurn) {
+                        cout << "Black is in Check!" << endl;
+                    } else {
+                        cout << "White is in Check!" << endl;
+                    }
                 }
 
                 whiteTurn = !whiteTurn;
@@ -187,16 +193,20 @@ int main() {
                         b.set(loc.first, loc.second, getPType(secondArg), Colour::Black);
                     }
                     cout << b;
+                    cout << "Added " << secondArg << " at " << location << endl;
                 } else if (option == "-") { // Delete piece (set to empty)
                     cin >> secondArg;
                     pair<int, int> loc = getCoord(secondArg);
                     b.set(loc.first, loc.second, PType::Empty, Colour::Empty);
                     cout << b;
+                    cout << "removed piece at " << secondArg << endl;
                 } else if (option == "=") { // Set colour to make next move
                     cin >> secondArg;
                     if (secondArg == "black") {
+                        cout << "Changed turn to black" << endl;
                         whiteTurn = false;
                     } else {
+                        cout << "Changed turn to white" << endl;
                         whiteTurn = true;
                     }
 
@@ -221,6 +231,9 @@ int main() {
         } else if (cmd == "init") {
             b.init();
             cout << b;
+        } else {
+            getline(cin, cmd);
+            cout << "Command not found, please re-enter a command:" << endl;
         }
 
 
