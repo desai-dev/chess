@@ -10,16 +10,17 @@
 
 using namespace std;
 
-Board::Board() : theBoard{vector<vector<Piece*>>(8, vector<Piece*>(8))}, td{nullptr} {}
+Board::Board() : theBoard{vector<vector<Piece*>>(8, vector<Piece*>(8))}, td{nullptr}, gd{nullptr}, win{} {}
 
-void Board::makeMove(int fromRow, int fromCol, int toRow, int toCol, Colour c) {
+bool Board::makeMove(int fromRow, int fromCol, int toRow, int toCol, Colour c) {
     // if its a valid move, then make the move
     if (theBoard[fromRow][fromCol]->isMoveValid(toRow, toCol, *this)) {
         // move piece to new position, and make old position empty
         delete theBoard[toRow][toCol];
         theBoard[toRow][toCol] = theBoard[fromRow][fromCol];
-        theBoard[fromRow][fromCol] = new Empty(Colour::None);
+        theBoard[fromRow][fromCol] = new Empty(Colour::Empty);
         theBoard[fromRow][fromCol]->attach(td);
+        theBoard[fromRow][fromCol]->attach(gd);
 
         // update locations
         theBoard[fromRow][fromCol]->setLocation(fromRow, fromCol);
@@ -29,16 +30,27 @@ void Board::makeMove(int fromRow, int fromCol, int toRow, int toCol, Colour c) {
         theBoard[fromRow][fromCol]->notifyObservers();
         theBoard[toRow][toCol]->notifyObservers();
     }
+    return true;
 };
+
+std::vector<std::vector<Piece*>> Board::getBoard() {
+    return theBoard;
+}
+
+int Board::getGridSize() {
+    return gridSize;
+}
+
 
 void Board::init() {
     // initialize members
     td = new TextDisplay{};
+    gd = new GraphicsDisplay{win};
 
     // set empty squares
     for (int i = 2; i < gridSize - 2; i++) {
         for (int j = 0; j < gridSize; j++) {
-            theBoard[i][j] = new Empty(Colour::None);
+            theBoard[i][j] = new Empty(Colour::Empty);
         }
     }
 
@@ -75,6 +87,7 @@ void Board::init() {
         for (int j = 0; j < gridSize; j++) {
             theBoard[i][j]->setLocation(i, j);
             theBoard[i][j]->attach(td);
+            theBoard[i][j]->attach(gd);
         }
     }
 };
@@ -110,19 +123,53 @@ void Board::set(int row, int col, PType p, Colour c) {
 
     // Add observer, update location, notify observer
         theBoard[row][col]->attach(td);
+        theBoard[row][col]->attach(gd);
         theBoard[row][col]->setLocation(row, col);
         theBoard[row][col]->notifyObservers();
 }
 
-bool Board::isWon() {
-    return true; // CHANGE LATER
+bool Board::checkValid() const {
+    // Need to check 1 white king, 1 black king
+    // No pawns on first and last row
+    // Neither king is in check
+    int whiteKingNum = 0;
+    int blackKingNum = 0;
+    bool pawnEndRows = false;
+    bool whiteKingCheck = false;
+    bool blackKingCheck = false;
+
+    for (int i = 0; i < gridSize; ++i) {
+        for (int j = 0; j < gridSize; ++j) {
+            if (theBoard[i][j]->getType() == PType::King) {
+                if (theBoard[i][j]->getColour() == Colour::White) {
+                    whiteKingNum++;
+                } else if (theBoard[i][j]->getColour() == Colour::Black) {
+                    blackKingNum++;
+                }
+            }
+        }
+    }
+
+    for (int i = 0; i < gridSize; ++i) {
+        if (theBoard[0][i]->getType() == PType::Pawn) {
+            pawnEndRows = true;
+        } else if (theBoard[gridSize - 1][i]->getType() == PType::Pawn) {
+            pawnEndRows = true;
+        }
+    }
+
+    if (pawnEndRows || whiteKingNum != 1 || blackKingNum != 1) {
+        return false;
+    }
+
+    return true;
+}
+
+int Board::getGameState(Colour c) {
+    return 0; // CHANGE LATER
 };
 
-std::vector<std::vector<Piece*>> Board::getBoard() {
-    return theBoard;
+ostream &operator<<(ostream &out, const Board &b) {
+    out << *b.td;
+    return out;
 }
-
-int Board::getGridSize() {
-    return gridSize;
-}
-

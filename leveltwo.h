@@ -5,7 +5,7 @@
 class LevelTwo : public AbstractComputer {
 
   public:
-    void nextMove() const override;
+    void nextMove(Colour c, Board &b) const override;
     ~LevelTwo() = default;
 
 
