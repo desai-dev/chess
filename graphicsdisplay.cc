@@ -69,6 +69,15 @@ void GraphicsDisplay::notify(Piece &p) {
     // get colour of piece
     int colour = (p.getColour() == Colour::Black) ? 2 : 3;
 
+    // Make square blank first
+    if ((loc.first + loc.second) % 2 == 0) {
+        // change colour for white tile
+        win.fillRectangle(loc.second*cellWidth, loc.first*cellWidth, cellWidth, cellWidth, 0);
+    } else {
+        // change colour for black tile
+        win.fillRectangle(loc.second*cellWidth, loc.first*cellWidth, cellWidth, cellWidth);
+    } 
+
     // update display based on the new location of the piece
     if (t == PType::Knight) {
         win.drawKnight(loc.second*cellWidth, loc.first*cellWidth, colour);

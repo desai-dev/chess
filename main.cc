@@ -173,7 +173,7 @@ int main() {
         } else if (cmd == "setup") {
             string option;
             string secondArg;
-            while (option != "done") {
+            while (true) {
                 cin >> option;
                 if (option == "+") {
                     string location;
