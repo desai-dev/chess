@@ -38,15 +38,18 @@ bool King::isMoveValid(int row, int col, Board &b) {
 
     // if its a castling move, check if it is valid or not
     if (!hasMoved && row == currentRow && (col - currentCol == 2 || col - currentCol == -2) && (row == 0 || row == 7)){ // attempt to castle
+        const int kingsideRookCol = 7;
+        const int queensideRookCol = 0;
+        
         // Check if there are pieces in the way
         if (col == currentCol + 2) {
-            for (int i = currentCol + 1; i <= currentCol + 3; i++) {
+            for (int i = currentCol + 1; i <= currentCol + 2; i++) {
                 if (!theBoard[currentRow][i]->isEmpty()) {
                     return false;  // There's a piece in the way
                 }
             }
         } else if (col == currentCol - 2) {
-            for (int i = currentCol - 1; i >= currentCol - 4; i--) {
+            for (int i = currentCol - 1; i >= currentCol - 3; i--) {
                 if (!theBoard[currentRow][i]->isEmpty()) {
                     return false;  // There's a piece in the way
                 }
@@ -55,9 +58,9 @@ bool King::isMoveValid(int row, int col, Board &b) {
         // Check if the rook in the corner has moved
         int rookCol;
         if (col == currentCol + 2) {
-            rookCol = 7;  // Kingside castling
+            rookCol = kingsideRookCol;  // Kingside castling
         } else {
-            rookCol = 0;  // Queenside castling
+            rookCol = queensideRookCol;  // Queenside castling
         }
 
         if (theBoard[currentRow][rookCol]->getType() != PType::Rook || theBoard[currentRow][rookCol]->getHasMoved()) {
