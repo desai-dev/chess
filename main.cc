@@ -5,6 +5,8 @@
 #include "levelone.h"
 #include "leveltwo.h"
 #include "levelthree.h"
+#include <chrono>
+typedef std::chrono::high_resolution_clock Clock;
 
 using namespace std;
 
@@ -81,8 +83,29 @@ int main() {
                 blackPlayer = 0;
             }
             int gameState = 0;
+
+            // TIME CONTROL
+            string time;
+            double minutes = 0;
+            bool hasTimeControl = false;
+            cout << "Would you like to play with time control? (y/n)" << endl;
+            cin >> time;
+            if (time[0] == 'Y' || time[0] == 'y') {
+                hasTimeControl = true;
+                cout << "How many minutes: ";
+                cin >> minutes;
+            }
+            double totalSeconds = minutes * 60;
+            double whiteTime = totalSeconds;
+            double blackTime = totalSeconds;
+            
+
+
+
+
             // Start playing
             while (true) {
+                auto t1 = Clock::now();
                 cin >> cmd;
                 bool validMove = true;
                 if (cmd == "resign") {
@@ -165,7 +188,6 @@ int main() {
                     cout << "Move was invalid, please try again" << endl;
                     continue;
                 }
-                
 
                 // After a move, check if won and switch colours
                 
@@ -178,8 +200,10 @@ int main() {
                 if (gameState == 1) { // Game is won
                     if (whiteTurn) {
                         whiteScore++;
+                        cout << "Checkmate! White wins!" << endl;
                     } else {
                         blackScore++;
+                        cout << "Checkmate! Black wins!" << endl;
                     }
                     b.init();
                     whiteTurn = true;
@@ -197,6 +221,32 @@ int main() {
                     } else {
                         cout << "White is in Check!" << endl;
                     }
+                }
+
+                auto t2 = Clock::now();
+
+                if (whiteTurn && hasTimeControl) {
+                    whiteTime = whiteTime - std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count();
+                    cout << "You took: " << std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count() << " seconds." << endl;
+                    cout << "Remaining time for White: " << whiteTime << " seconds." << endl;
+                } else if (hasTimeControl){
+                    blackTime = blackTime - std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count();
+                    cout << "You took: " << std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count() << " seconds." << endl;
+                    cout << "Remaining time for Black: " << blackTime << " seconds." << endl;
+                }   
+
+                if (whiteTurn && whiteTime < 0 && hasTimeControl) {
+                    blackScore++;
+                    cout << "White ran out of time! Black wins!" << endl;
+                    b.init();
+                    whiteTurn = true;
+                    break;
+                } else if (!whiteTurn && blackTime < 0 && hasTimeControl) {
+                    whiteScore++;
+                    cout << "Black ran out of time! White wins!" << endl;
+                    b.init();
+                    whiteTurn = true;
+                    break;
                 }
 
                 whiteTurn = !whiteTurn;
