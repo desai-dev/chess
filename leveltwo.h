@@ -4,6 +4,7 @@
 #include "board.h"
 #include "piece.h"
 #include <vector>
+#include "empty.h"
 
 class LevelTwo : public AbstractComputer {
 
