@@ -28,8 +28,9 @@ Board::~Board() {
 bool Board::makeMove(int fromRow, int fromCol, int toRow, int toCol, Colour c) {
     // if its a valid move, then make the move
     if (c == theBoard[fromRow][fromCol]->getColour() && theBoard[fromRow][fromCol]->isMoveValid(toRow, toCol, *this)) {
-        // move piece to new position, and make old position empty
-        delete theBoard[toRow][toCol];
+        // save piece in case you need to undo move
+        Piece* tmp = theBoard[toRow][toCol];
+
         theBoard[toRow][toCol] = theBoard[fromRow][fromCol];
         theBoard[fromRow][fromCol] = new Empty(Colour::Empty);
         theBoard[fromRow][fromCol]->attach(td);
@@ -39,11 +40,34 @@ bool Board::makeMove(int fromRow, int fromCol, int toRow, int toCol, Colour c) {
         theBoard[fromRow][fromCol]->setLocation(fromRow, fromCol);
         theBoard[toRow][toCol]->setLocation(toRow, toCol);
 
+        for (int i = 0; i < gridSize; i++) {
+            for (int j = 0; j < gridSize; j++) {
+                if (theBoard[i][j]->getType() == PType::King && theBoard[i][j]->getColour() == c && theBoard[i][j]->IsInCheck(i, j, *this)) {
+                    delete theBoard[fromRow][fromCol];
+                    theBoard[fromRow][fromCol] = theBoard[toRow][toCol];
+                    theBoard[toRow][toCol] = tmp;
+                    tmp = nullptr;
+
+                    // update locations
+                    theBoard[fromRow][fromCol]->setLocation(fromRow, fromCol);
+                    theBoard[toRow][toCol]->setLocation(toRow, toCol);
+                    return false;
+                }
+            }
+        }
+
+        delete tmp;
+        
+        if (theBoard[toRow][toCol]->getType() == PType::King || theBoard[toRow][toCol]->getType() == PType::Rook) {
+            theBoard[toRow][toCol]->setHasMoved();
+        }
+
         // notify observers
         theBoard[fromRow][fromCol]->notifyObservers();
         theBoard[toRow][toCol]->notifyObservers();
         return true;
     }
+
     return false;
 };
 

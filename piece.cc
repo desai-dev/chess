@@ -40,6 +40,7 @@ void Piece::setLocation(int row, int col) {
 bool Piece::getHasMoved() const{
     return true;
 }
+void Piece::setHasMoved() {}
 
 // determines if the king is in check or not
 bool Piece::IsInCheck(int row, int col, Board &b) {return false;}
