@@ -58,7 +58,7 @@ int main() {
     LevelOne c1{};
     LevelTwo c2{};
     LevelThree c3{};
-
+    try {
     while (true) {
         cin >> cmd;
         if (cmd == "game") {
@@ -159,6 +159,7 @@ int main() {
                     blackScore += 0.5;
                     b.init();
                     whiteTurn = true;
+                    cout << "Stalemate!" << endl;
                     break;
                 } else if (gameState == 3) {
                     if (whiteTurn) {
@@ -238,60 +239,10 @@ int main() {
 
 
     }
-
-
-
-
-
-
-
-
-
-    // sample makeMove
-    // Board b;
-    b.init();
-    b.makeMove(1, 0, 3, 0, Colour::Black);
-
-    // sample Set
-    b.set(4, 4, PType::Bishop, Colour::Black);
-
-    pair<int, int> loc = getCoord("h8");
-
-    cout << loc.first << " " << loc.second << endl;
-
-
-    cin >> cmd;
-
-    // SETUP COMMAND
-    if (cmd == "setup") {
-        string option;
-        string secondArg;
-        while (option != "done") {
-            cin >> option;
-            if (option == "+") {
-                string location;
-                cin >> secondArg >> location;
-                pair<int, int> loc = getCoord(location);
-                if (isupper(secondArg[0])) {
-                    b.set(loc.first, loc.second, getPType(secondArg), Colour::White);
-                } else {
-                    b.set(loc.first, loc.second, getPType(secondArg), Colour::Black);
-                }
-            } else if (option == "-") { // Delete piece (set to empty)
-                cin >> secondArg;
-                pair<int, int> loc = getCoord(secondArg);
-                b.set(loc.first, loc.second, PType::Empty, Colour::Empty);
-            } else if (option == "=") { // Set colour to make next move
-                cin >> secondArg;
-                // SET COLOUR TO GO NEXT TURN HERE
-
-            } else if (option == "done") { // Exit setup mode [NEED TO CHECK IF VALID StATE OR NOT]
-                break;
-            } else { // Invalid command, get the line to clear buffer and restart (not sure if buffer needs to be cleared)
-                getline(cin, option);
-                cout << "Please re-enter a command in setup mode:" << endl;
-            }
-        }
-        
+    } catch (...) {
+        // End of game, print scores
+        cout << "FINAL SCORES:" << endl; 
+        cout << "White: " << whiteScore << endl;
+        cout << "Black: " << blackScore << endl << endl;
     }
 }

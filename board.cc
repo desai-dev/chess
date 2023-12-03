@@ -196,15 +196,13 @@ void Board::set(int row, int col, PType p, Colour c) {
         theBoard[row][col]->notifyObservers();
 }
 
-bool Board::checkValid() const {
+bool Board::checkValid() {
     // Need to check 1 white king, 1 black king
     // No pawns on first and last row
     // Neither king is in check
     int whiteKingNum = 0;
     int blackKingNum = 0;
     bool pawnEndRows = false;
-    bool whiteKingCheck = false;
-    bool blackKingCheck = false;
 
     for (int i = 0; i < gridSize; ++i) {
         for (int j = 0; j < gridSize; ++j) {
@@ -228,6 +226,14 @@ bool Board::checkValid() const {
 
     if (pawnEndRows || whiteKingNum != 1 || blackKingNum != 1) {
         return false;
+    }
+
+    for (int i = 0; i < gridSize; i++) {
+        for (int j = 0; j < gridSize; j++) {
+            if (theBoard[i][j]->getType() == PType::King && theBoard[i][j]->IsInCheck(i, j, *this)) {
+                return false;
+            }
+        }
     }
 
     return true;
