@@ -31,6 +31,7 @@ class Piece {
         Colour getColour();
         PType getType();
         void setLocation(int row, int col);
+
         
         // virtual functions to be overridden
         virtual bool isMoveValid(int row, int col, Board &b) = 0;

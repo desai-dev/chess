@@ -37,6 +37,7 @@ class Board {
         std::vector<int> getLastMove();
         // Clears board (leaves 2 kings)
         void clear();
+        void setTheme(int o);
         // Get Possible Check moves
         std::vector<std::vector<int>> getCheckMoves(std::vector<std::vector<int>> moves, Colour c);
         // Get Avoid Capture moves

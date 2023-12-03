@@ -513,6 +513,15 @@ std::vector<std::vector<int>> Board::filterCheck(std::vector<std::vector<int>> m
 
 }
 
+void Board::setTheme(int o) {
+    gd->setOffest(o);
+     for (int i = 0; i < gridSize; i++) {
+        for (int j = 0; j < gridSize; j++) {
+            theBoard[i][j]->notifyObservers();
+        }
+    }
+}
+
 ostream &operator<<(ostream &out, const Board &b) {
     out << *b.td;
     return out;

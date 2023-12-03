@@ -262,7 +262,22 @@ int main() {
         } else if (cmd == "init") {
             b.init();
             cout << b;
-        } else {
+        } else if (cmd == "theme") {
+            int offset = 0;
+            cin >> offset;
+            if (offset == 0) {
+                b.setTheme(0);
+            } else if (offset == 1) {
+                b.setTheme(1);
+            } else if (offset == 2) {
+                b.setTheme(4);
+            } else if (offset == 3) {
+                b.setTheme(6);
+            } else {
+                cout << "Invalid theme (0-3)" << endl;
+            }
+        } 
+        else {
             getline(cin, cmd);
             cout << "Command not found, please re-enter a command:" << endl;
         }
