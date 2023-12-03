@@ -8,12 +8,16 @@ Pawn::Pawn(Colour colour) : Piece{colour, PType::Pawn} {};
 
 bool Pawn::isMoveValid(int row, int col, Board &b) {
     vector<std::vector<Piece*>> theBoard = b.getBoard();
+    vector<int> lastMove = b.getLastMove();
 
     int defaultRow;
+    int enPassantRow;
     if (this->getColour() == Colour::White) {
         defaultRow = 6;
+        enPassantRow = 1;
     } else {
         defaultRow = 1;
+        enPassantRow = 6;
     }
 
     // initalize current row and column
@@ -56,9 +60,13 @@ bool Pawn::isMoveValid(int row, int col, Board &b) {
         return true;
     }
 
-    // Pawns can capture with en passant
-    if (row =)
-
+    // Pawns can capture with en passant (check last move is opposite pawn 2 up)
+    if (row == currentRow + moveDirection && (col == currentCol + 1 || col == currentCol - 1) &&
+        theBoard[row][col]->isEmpty() && !theBoard[currentRow][col]->isEmpty() && theBoard[currentRow][col]->getColour() != this->getColour()
+        && theBoard[currentRow][col]->getType() == PType::Pawn 
+        && lastMove[0] == enPassantRow && lastMove[1] == col && lastMove[2] == currentRow && lastMove[3] == col) {
+            return true;
+    }
     return false;
 }
 

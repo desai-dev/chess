@@ -92,6 +92,13 @@ bool Board::makeMove(int fromRow, int fromCol, int toRow, int toCol, Colour c) {
             theBoard[toRow][toCol - 2]->notifyObservers();
         }
 
+        // update last position for en passant
+        lastMove[0] = fromRow;
+        lastMove[1] = fromCol;
+        lastMove[2] = toRow;
+        lastMove[3] = toCol;
+
+
         // notify observers
         theBoard[fromRow][fromCol]->notifyObservers();
         theBoard[toRow][toCol]->notifyObservers();
@@ -109,6 +116,9 @@ int Board::getGridSize() {
     return gridSize;
 }
 
+std::vector<int> Board::getLastMove() {
+    return lastMove;
+}
 
 void Board::init() {
     // initialize members

@@ -13,6 +13,7 @@ class Board {
     TextDisplay *td;
     GraphicsDisplay *gd;
     Xwindow win;
+    std::vector<int> lastMove = {-1, -1, -1, -1};
 
     public:
         Board();
@@ -31,6 +32,8 @@ class Board {
         std::vector<std::vector<Piece*>> getBoard();
         // returns gridsize
         int getGridSize();
+        // get lastMove
+        std::vector<int> getLastMove();
         // Clears board (leaves 2 kings)
         void clear();
 
