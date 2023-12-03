@@ -30,6 +30,20 @@ bool Board::makeMove(int fromRow, int fromCol, int toRow, int toCol, Colour c) {
     if (c == theBoard[fromRow][fromCol]->getColour() && theBoard[fromRow][fromCol]->isMoveValid(toRow, toCol, *this)) {
         // save piece in case you need to undo move
         Piece* tmp = theBoard[toRow][toCol];
+        // variables for checking en passant
+        bool enpassant = false;
+
+        // check for en passant
+        if (theBoard[fromRow][fromCol]->getType() == PType::Pawn) {
+            int moveDirection = (theBoard[fromRow][fromCol]->getColour() == Colour::White) ? -1 : 1;
+            int enPassantRow = (theBoard[fromRow][fromCol]->getColour() == Colour::White) ? 1 : 6;
+            if (toRow == fromRow + moveDirection && (toCol == fromCol + 1 || toCol == fromCol - 1) &&
+                theBoard[toRow][toCol]->isEmpty() && !theBoard[fromRow][toCol]->isEmpty() && theBoard[fromRow][toCol]->getColour() != theBoard[fromRow][fromCol]->getColour()
+                && theBoard[fromRow][toCol]->getType() == PType::Pawn 
+                && lastMove[0] == enPassantRow && lastMove[1] == toCol && lastMove[2] == fromRow && lastMove[3] == toCol) {
+                    enpassant = true;
+            }
+        }
 
         theBoard[toRow][toCol] = theBoard[fromRow][fromCol];
         theBoard[fromRow][fromCol] = new Empty(Colour::Empty);
@@ -40,6 +54,7 @@ bool Board::makeMove(int fromRow, int fromCol, int toRow, int toCol, Colour c) {
         theBoard[fromRow][fromCol]->setLocation(fromRow, fromCol);
         theBoard[toRow][toCol]->setLocation(toRow, toCol);
 
+        // check if a pinned piece was moved
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
                 if (theBoard[i][j]->getType() == PType::King && theBoard[i][j]->getColour() == c && theBoard[i][j]->IsInCheck(i, j, *this)) {
@@ -60,6 +75,16 @@ bool Board::makeMove(int fromRow, int fromCol, int toRow, int toCol, Colour c) {
         
         if (theBoard[toRow][toCol]->getType() == PType::King || theBoard[toRow][toCol]->getType() == PType::Rook) {
             theBoard[toRow][toCol]->setHasMoved();
+        }
+
+        // if en passant delete the captured pawn, and notify observers
+        if (enpassant) {
+            delete theBoard[fromRow][toCol];
+            theBoard[fromRow][toCol] = new Empty(Colour::Empty);
+            theBoard[fromRow][toCol]->attach(td);
+            theBoard[fromRow][toCol]->attach(gd);
+            theBoard[fromRow][toCol]->setLocation(fromRow, toCol);
+            theBoard[fromRow][toCol]->notifyObservers();
         }
 
         // kingside castle
