@@ -36,6 +36,7 @@ class Piece {
         virtual bool isMoveValid(int row, int col, Board &b) = 0;
         virtual ~Piece() = 0;
         virtual bool getHasMoved() const;
+        virtual void setHasMoved();
         // determines if the king is in check or not
         virtual bool IsInCheck(int row, int col, Board &b);
 };

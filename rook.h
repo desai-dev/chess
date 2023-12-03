@@ -11,7 +11,7 @@ class Rook : public Piece {
     // determines if move made on rook is valid
     bool isMoveValid(int row, int col, Board &b) override;
     bool getHasMoved() const override;
-    void setHasMoved();
+    void setHasMoved() override;
     
     ~Rook() override;
 
