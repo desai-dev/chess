@@ -62,6 +62,36 @@ bool Board::makeMove(int fromRow, int fromCol, int toRow, int toCol, Colour c) {
             theBoard[toRow][toCol]->setHasMoved();
         }
 
+        // kingside castle
+        if (theBoard[toRow][toCol]->getType() == PType::King && (toCol - fromCol == 2)) {
+            // move rook
+            delete theBoard[toRow][toCol - 1];
+            theBoard[toRow][toCol - 1] = theBoard[toRow][toCol + 1];
+            theBoard[toRow][toCol + 1] = new Empty(Colour::Empty);
+            theBoard[toRow][toCol + 1]->attach(td);
+            theBoard[toRow][toCol + 1]->attach(gd);
+
+            theBoard[toRow][toCol - 1]->setLocation(toRow, toCol - 1);
+            theBoard[toRow][toCol + 1]->setLocation(toRow, toCol + 1);
+            theBoard[toRow][toCol + 1]->notifyObservers();
+            theBoard[toRow][toCol - 1]->notifyObservers();
+        }
+
+        // queenside castle
+        if (theBoard[toRow][toCol]->getType() == PType::King && (toCol - fromCol == -2)) {
+            // move rook
+            delete theBoard[toRow][toCol + 1];
+            theBoard[toRow][toCol + 1] = theBoard[toRow][toCol - 2];
+            theBoard[toRow][toCol - 2] = new Empty(Colour::Empty);
+            theBoard[toRow][toCol - 2]->attach(td);
+            theBoard[toRow][toCol - 2]->attach(gd);
+
+            theBoard[toRow][toCol + 1]->setLocation(toRow, toCol + 1);
+            theBoard[toRow][toCol - 2]->setLocation(toRow, toCol - 2);
+            theBoard[toRow][toCol + 1]->notifyObservers();
+            theBoard[toRow][toCol - 2]->notifyObservers();
+        }
+
         // notify observers
         theBoard[fromRow][fromCol]->notifyObservers();
         theBoard[toRow][toCol]->notifyObservers();

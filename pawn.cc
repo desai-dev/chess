@@ -8,6 +8,14 @@ Pawn::Pawn(Colour colour) : Piece{colour, PType::Pawn} {};
 
 bool Pawn::isMoveValid(int row, int col, Board &b) {
     vector<std::vector<Piece*>> theBoard = b.getBoard();
+
+    int defaultRow;
+    if (this->getColour() == Colour::White) {
+        defaultRow = 6;
+    } else {
+        defaultRow = 1;
+    }
+
     // initalize current row and column
     int currentRow = this->getLocation().first;
     int currentCol = this->getLocation().second;
@@ -34,35 +42,24 @@ bool Pawn::isMoveValid(int row, int col, Board &b) {
     // Pawns can move forward by one square (default)
     if (row == currentRow + moveDirection && col == currentCol && theBoard[row][col]->isEmpty()) {
         return true;
-    } else {
-        int defaultRow;
-        if (this->getColour() == Colour::White) {
-            defaultRow = 6;
-        } else {
-            defaultRow = 1;
-        }
-        // Pawns have the option to move forward by two squares on their first move
-        if (currentRow == defaultRow && row == currentRow + (2 * moveDirection) && col == currentCol && theBoard[row][col]->isEmpty() 
-            && theBoard[currentRow + moveDirection][col]->isEmpty()) {
-            return true;
-        } else {
-            // Pawns capture diagonally
-            if (row == currentRow + moveDirection && (col == currentCol + 1 || col == currentCol - 1) &&
-                !theBoard[row][col]->isEmpty() && theBoard[row][col]->getColour() != this->getColour()) {
-                return true;
-            } else {
-                // If none of the conditions are met, the move is not valid
-                return false;
-            }
-        }
     }
-    // en passant
-}
 
-// // pawn promotion
-// void promotePawn(int row, int col, Board &b) {
-//     Piece* promotedPiece = new Queen(this->getColour());
-//     vector<std::vector<Piece*>> theBoard = b.getBoard();
-// }
+    // Pawns have the option to move forward by two squares on their first move
+    if (currentRow == defaultRow && row == currentRow + (2 * moveDirection) && col == currentCol && theBoard[row][col]->isEmpty() 
+        && theBoard[currentRow + moveDirection][col]->isEmpty()) {
+        return true;
+    }
+
+    // Pawns capture diagonally
+    if (row == currentRow + moveDirection && (col == currentCol + 1 || col == currentCol - 1) &&
+        !theBoard[row][col]->isEmpty() && theBoard[row][col]->getColour() != this->getColour()) {
+        return true;
+    }
+
+    // Pawns can capture with en passant
+    if (row =)
+
+    return false;
+}
 
 Pawn::~Pawn() {}
