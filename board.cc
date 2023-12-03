@@ -371,7 +371,122 @@ int Board::getGameState(Colour c) {
         return 3;
     }
     return 0;
-};
+}
+
+std::vector<std::vector<int>> Board::getCheckMoves(std::vector<std::vector<int>> moves, Colour c) {
+    std::vector<std::vector<int>> checkMoves;
+    for (int i = 0; i < moves.size(); ++i) {
+        int currentRow = moves[i][0];
+        int currentCol = moves[i][1];
+        int row = moves[i][2];
+        int col = moves[i][3];
+        
+        
+        
+        Piece* tmp = theBoard[row][col];
+        theBoard[row][col] = theBoard[currentRow][currentCol];
+        theBoard[currentRow][currentCol] = new Empty(Colour::Empty);
+        theBoard[row][col]->setLocation(row, col);
+        theBoard[currentRow][currentCol]->setLocation(currentRow, currentCol);
+        for (int j = 0; j < gridSize; j++) {
+            for (int k = 0; k < gridSize; k++) {
+                if (theBoard[j][k]->getType() == PType::King && theBoard[j][k]->getColour() != c && theBoard[j][k]->IsInCheck(j, k, *this)) {
+                    std::vector<int> m = {currentRow, currentCol, row, col};
+                    checkMoves.emplace_back(m);
+                }
+            }
+        }
+        delete theBoard[currentRow][currentCol];
+        theBoard[currentRow][currentCol] = theBoard[row][col];
+        theBoard[row][col] = tmp;
+        theBoard[currentRow][currentCol]->setLocation(currentRow, currentCol);
+        tmp = nullptr;
+        
+    }
+    return checkMoves;
+}
+
+std::vector<std::vector<int>> Board::getAvoidCaptureMoves(std::vector<std::vector<int>> moves, Colour c) {
+    std::vector<std::vector<int>> avoidMoves;
+    for (int i = 0; i < moves.size(); ++i) {
+        int currentRow = moves[i][0];
+        int currentCol = moves[i][1];
+        int row = moves[i][2];
+        int col = moves[i][3];
+        bool canCapture = false;
+        
+        
+        Piece* tmp = theBoard[row][col];
+        theBoard[row][col] = theBoard[currentRow][currentCol];
+        theBoard[currentRow][currentCol] = new Empty(Colour::Empty);
+        theBoard[row][col]->setLocation(row, col);
+        theBoard[currentRow][currentCol]->setLocation(currentRow, currentCol);
+        for (int j = 0; j < gridSize; j++) {
+            for (int k = 0; k < gridSize; k++) {
+                if (theBoard[j][k]->getType() != PType::Empty && theBoard[j][k]->getColour() != c && theBoard[j][k]->isMoveValid(row, col, *this)) {
+                    canCapture = true;
+                }
+            }
+        }
+        delete theBoard[currentRow][currentCol];
+        theBoard[currentRow][currentCol] = theBoard[row][col];
+        theBoard[row][col] = tmp;
+        theBoard[currentRow][currentCol]->setLocation(currentRow, currentCol);
+        tmp = nullptr;
+
+        if (!canCapture) {
+            std::vector<int> m = {currentRow, currentCol, row, col};
+            avoidMoves.emplace_back(m);
+        }
+        
+    }
+    return avoidMoves;
+}
+
+std::vector<std::vector<int>> Board::filterCheck(std::vector<std::vector<int>> moves, Colour c) {
+    std::vector<std::vector<int>> defendCheck;
+
+    for (int i = 0; i < moves.size(); ++i) {
+
+        int fromRow = moves[i][0];
+        int fromCol = moves[i][1];
+        int toRow = moves[i][2];
+        int toCol = moves[i][3];
+
+        Piece* tmp = theBoard[toRow][toCol];
+
+        theBoard[toRow][toCol] = theBoard[fromRow][fromCol];
+        theBoard[fromRow][fromCol] = new Empty(Colour::Empty);
+        theBoard[fromRow][fromCol]->attach(td);
+        theBoard[fromRow][fromCol]->attach(gd);
+
+        // update locations
+        theBoard[fromRow][fromCol]->setLocation(fromRow, fromCol);
+        theBoard[toRow][toCol]->setLocation(toRow, toCol);
+
+        // check if a pinned piece was moved
+        for (int i = 0; i < gridSize; i++) {
+            for (int j = 0; j < gridSize; j++) {
+                if (theBoard[i][j]->getType() == PType::King && theBoard[i][j]->getColour() == c && !theBoard[i][j]->IsInCheck(i, j, *this)) {
+                    vector<int> m = {fromRow, fromCol, toRow, toCol};
+                    defendCheck.emplace_back(m);
+                }
+            }
+        }
+        delete theBoard[fromRow][fromCol];
+        theBoard[fromRow][fromCol] = theBoard[toRow][toCol];
+        theBoard[toRow][toCol] = tmp;
+        tmp = nullptr;
+
+        // update locations
+        theBoard[fromRow][fromCol]->setLocation(fromRow, fromCol);
+        theBoard[toRow][toCol]->setLocation(toRow, toCol);
+
+    }
+
+    return defendCheck;
+
+}
 
 ostream &operator<<(ostream &out, const Board &b) {
     out << *b.td;

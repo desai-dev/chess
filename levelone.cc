@@ -2,7 +2,7 @@
 
 // Idea:
 //   Generate array of all valid moves 
-void LevelOne::nextMove(Colour c, Board &b) const {
+void LevelOne::nextMove(Colour c, Board &b, bool inCheck) const {
     // Calculate best move to make
     std::vector<std::vector<int>> moves;
 
@@ -17,6 +17,10 @@ void LevelOne::nextMove(Colour c, Board &b) const {
                 }
             }
         }
+    }
+
+    if (inCheck) {
+        moves = b.filterCheck(moves, c);
     }
 
     int random = std::rand() % moves.size();

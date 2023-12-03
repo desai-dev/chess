@@ -9,7 +9,7 @@
 class LevelThree : public AbstractComputer {
 
   public:
-    void nextMove(Colour c, Board &b) const override;
+    void nextMove(Colour c, Board &b, bool inCheck) const override;
     ~LevelThree() = default;
 
 

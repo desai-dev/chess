@@ -36,6 +36,12 @@ class Board {
         std::vector<int> getLastMove();
         // Clears board (leaves 2 kings)
         void clear();
+        // Get Possible Check moves
+        std::vector<std::vector<int>> getCheckMoves(std::vector<std::vector<int>> moves, Colour c);
+        // Get Avoid Capture moves
+        std::vector<std::vector<int>> getAvoidCaptureMoves(std::vector<std::vector<int>> moves, Colour c);
+        // Defend Check filter for computer
+        std::vector<std::vector<int>> filterCheck(std::vector<std::vector<int>> moves, Colour c);
 
         friend std::ostream &operator<<(std::ostream &out, const Board &b);
 

@@ -80,7 +80,7 @@ int main() {
             } else if (bPlayer == "human") {
                 blackPlayer = 0;
             }
-            
+            int gameState = 0;
             // Start playing
             while (true) {
                 cin >> cmd;
@@ -106,11 +106,25 @@ int main() {
 
                             validMove = b.makeMove(loc1.first, loc1.second, loc2.first, loc2.second, Colour::White);
                         } else if (whitePlayer == 1) {
-                            c1.nextMove(Colour::White, b);
+                            if (gameState == 3) {
+                                c1.nextMove(Colour::White, b, true);
+                            } else {
+                                c1.nextMove(Colour::White, b, false);
+                            }
+                            
+                            
                         } else if (whitePlayer == 2) {
-                            c2.nextMove(Colour::White, b);
+                            if (gameState == 3) {
+                                c2.nextMove(Colour::White, b, true);
+                            } else {
+                                c2.nextMove(Colour::White, b, false);
+                            }
                         } else if (whitePlayer == 3) {
-                            c3.nextMove(Colour::White, b);
+                            if (gameState == 3) {
+                                c3.nextMove(Colour::White, b, true);
+                            } else {
+                                c3.nextMove(Colour::White, b, false);
+                            }
                         }
                     } else {
                         if (blackPlayer == 0) {
@@ -121,11 +135,24 @@ int main() {
 
                             validMove = b.makeMove(loc1.first, loc1.second, loc2.first, loc2.second, Colour::Black);
                         } else if (blackPlayer == 1) {
-                            c1.nextMove(Colour::Black, b);
+                            if (gameState == 3) {
+                                c1.nextMove(Colour::Black, b, true);
+                            } else {
+                                c1.nextMove(Colour::Black, b, false);
+                            }
+                            
                         } else if (blackPlayer == 2) {
-                            c2.nextMove(Colour::Black, b);
+                            if (gameState == 3) {
+                                c2.nextMove(Colour::Black, b, true);
+                            } else {
+                                c2.nextMove(Colour::Black, b, false);
+                            }
                         } else if (blackPlayer == 3) {
-                            c3.nextMove(Colour::Black, b);
+                            if (gameState == 3) {
+                                c3.nextMove(Colour::Black, b, true);
+                            } else {
+                                c3.nextMove(Colour::Black, b, false);
+                            }
                         }
                     }
                 }
@@ -138,7 +165,7 @@ int main() {
                 
 
                 // After a move, check if won and switch colours
-                int gameState;
+                
                 if (whiteTurn) {
                     gameState = b.getGameState(Colour::Black);
                 } else {
