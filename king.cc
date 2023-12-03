@@ -119,7 +119,7 @@ bool King::isMoveValid(int row, int col, Board &b) {
     }
 
     // the move is valid if none of the above conditions are true
-    return false;
+    return true;
 }
 
 bool King::IsInCheck(int row, int col, Board &b) {
