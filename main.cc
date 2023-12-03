@@ -155,6 +155,9 @@ int main() {
                             }
                         }
                     }
+                } else {
+                    cout << "Invalid Command, please try again" << endl;
+                    continue;
                 }
                 cout << b;
 

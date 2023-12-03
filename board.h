@@ -2,6 +2,7 @@
 #define __BOARD_H__
 
 #include <vector>
+#include <iostream>
 #include "piece.h"
 #include "textdisplay.h"
 #include "graphicsdisplay.h"

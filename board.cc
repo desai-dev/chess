@@ -77,6 +77,31 @@ bool Board::makeMove(int fromRow, int fromCol, int toRow, int toCol, Colour c) {
             theBoard[toRow][toCol]->setHasMoved();
         }
 
+        // if pawn promotion, cin a command and replace pawn with requested piece
+        if (theBoard[toRow][toCol]->getType() == PType::Pawn && (toRow == 0 || toRow == 7)) {
+            string cmd;
+            cin >> cmd;
+            delete theBoard[toRow][toCol];
+
+            if (cmd == "Q" || cmd == "q") {
+                theBoard[toRow][toCol] = new Queen{c};
+            } else if (cmd == "R" || cmd == "r") {
+                theBoard[toRow][toCol] = new Rook{c};
+            } else if (cmd == "B" || cmd == "b") {
+                theBoard[toRow][toCol] = new Bishop{c};
+            } else if (cmd == "N" || cmd == "n") {
+                theBoard[toRow][toCol] = new Knight{c};
+            } else {
+                // getline(cin, cmd);
+                theBoard[toRow][toCol] = new Queen{c};
+            }
+
+            theBoard[toRow][toCol]->attach(td);
+            theBoard[toRow][toCol]->attach(gd);
+            theBoard[toRow][toCol]->setLocation(toRow, toCol);
+            theBoard[toRow][toCol]->notifyObservers();
+        }
+
         // if en passant delete the captured pawn, and notify observers
         if (enpassant) {
             delete theBoard[fromRow][toCol];
