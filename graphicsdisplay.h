@@ -7,6 +7,7 @@
 
 class GraphicsDisplay: public Observer {
     Xwindow &win;
+    // set properties for the display
     const int gridSize = 560;
     const int cellWidth = 70;
     const int numCells = 8;
@@ -18,9 +19,9 @@ class GraphicsDisplay: public Observer {
 
     public:
         GraphicsDisplay(Xwindow &w);
-
+        // update graphics based on change to piece location
         void notify(Piece &p) override;
-
+        // set the offset of the piece
         void setOffest(int o);
 
         ~GraphicsDisplay();

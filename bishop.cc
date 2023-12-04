@@ -3,8 +3,10 @@
 
 using namespace std;
 
+// bishop ctor
 Bishop::Bishop(Colour colour) : Piece{colour, PType::Bishop} {};
 
+// checks if a bishop move is valid
 bool Bishop::isMoveValid(int row, int col, Board &b) {
     vector<std::vector<Piece*>> theBoard = b.getBoard();
     // initalize current row and column
@@ -22,14 +24,14 @@ bool Bishop::isMoveValid(int row, int col, Board &b) {
         return false;
     }
 
-    // Check if the move is diagonal
+    // check if the move is diagonal
     int rowDifference = row - currentRow;
     int colDifference = col - currentCol;
     if (rowDifference != colDifference && rowDifference != -colDifference) {
         return false;
     }
 
-    // Check if there are any pieces in the path of the bishop
+    // check if there are any pieces in the path of the bishop
     int rowIncrement, colIncrement;
 
     if (rowDifference > 0) {
@@ -43,6 +45,7 @@ bool Bishop::isMoveValid(int row, int col, Board &b) {
     } else {
         colIncrement = -1;
     }
+    
     // traverse the path of the bishop
     for (int i = currentRow + rowIncrement, j = currentCol + colIncrement; i != row; i += rowIncrement, j += colIncrement) {
         if (!theBoard[i][j]->isEmpty()) {

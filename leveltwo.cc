@@ -1,5 +1,6 @@
 #include "leveltwo.h"
-
+  
+// generate nextMove for computer
 void LevelTwo::nextMove(Colour c, Board &b, bool inCheck) const {
     
     // Generate all random moves

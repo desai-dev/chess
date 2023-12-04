@@ -103,6 +103,7 @@ void GraphicsDisplay::notify(Piece &p) {
     }
 };
 
+// set offset for graphicsdisplay
 void GraphicsDisplay::setOffest(int o) {
     offset = o;
 }

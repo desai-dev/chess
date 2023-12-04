@@ -3,8 +3,10 @@
 
 using namespace std;
 
+// create a knight piece
 Knight::Knight(Colour colour) : Piece{colour, PType::Knight} {};
 
+// detrmines if knight move is valid
 bool Knight::isMoveValid(int row, int col, Board &b) {
     vector<std::vector<Piece*>> theBoard = b.getBoard();
     // initalize current row and column

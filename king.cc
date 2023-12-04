@@ -107,6 +107,7 @@ bool King::isMoveValid(int row, int col, Board &b) {
     return true;
 }
 
+// returns true if king is in check and false otherwise
 bool King::IsInCheck(int row, int col, Board &b) {
     vector<std::vector<Piece*>> theBoard = b.getBoard();
     int gridSize = b.getGridSize();
@@ -149,9 +150,12 @@ bool King::IsInCheck(int row, int col, Board &b) {
     return false;
 }
 
+// returns getHasMoved
 bool King::getHasMoved() const{
     return hasMoved;
 }
+
+// sets getHasMoved
 void King::setHasMoved(){
     hasMoved = true;
 }
