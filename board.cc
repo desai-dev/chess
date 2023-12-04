@@ -343,9 +343,10 @@ int Board::getGameState(Colour c) {
             }
         }
     }
+    /*
     for (int i = 0; i < moves.size(); i++) {
         cout << moves[i][0] << moves[i][1] << moves[i][2] << moves[i][3] << endl;
-    }
+    }*/
     // If no moves can be made, stalemate
     if (moves.size() == 0) {
         stalemate = true;
@@ -453,12 +454,12 @@ bool Board::isKingInCheckAfterMove(Colour c, int fromRow, int fromCol, int toRow
     // update locations of moved piece and new empty piece
     theBoard[fromRow][fromCol]->setLocation(fromRow, fromCol);
     theBoard[toRow][toCol]->setLocation(toRow, toCol);
-    cout << "B4" << endl;
+    //cout << "B4" << endl;
     // if king is in check we want to return true
     if (isKingInCheck(c)) {
         ret = true;
     }
-    cout << "AFTER" << endl;
+    //cout << "AFTER" << endl;
 
     // undo move before returning; delete empty piece, and move piece back to where it was
     delete theBoard[fromRow][fromCol];

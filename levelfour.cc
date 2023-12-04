@@ -1,6 +1,6 @@
-#include "levelthree.h"
+#include "levelfour.h"
 
-void LevelThree::nextMove(Colour c, Board &b, bool inCheck) const {
+void LevelFour::nextMove(Colour c, Board &b, bool inCheck) const {
     // Generate all random moves
     std::vector<std::vector<int>> randMoves;
     std::vector<std::vector<int>> checkCaptureMoves;
@@ -67,7 +67,7 @@ void LevelThree::nextMove(Colour c, Board &b, bool inCheck) const {
 
     // Avoid moves that will avoid capture second move
 
-    // goodAvoidMoves = b.getAvoidCaptureMoves(avoidMoves, c);
+    goodAvoidMoves = b.getAvoidCaptureMoves(avoidMoves, c);
 
     if (inCheck) {
         goodAvoidMoves = b.filterCheck(goodAvoidMoves, c);
@@ -97,7 +97,7 @@ void LevelThree::nextMove(Colour c, Board &b, bool inCheck) const {
 
     // Pick a good move that avoids capture
 
-    // avoidCaptureGoodMoves = b.getAvoidCaptureMoves(checkCaptureMoves, c);
+    avoidCaptureGoodMoves = b.getAvoidCaptureMoves(checkCaptureMoves, c);
 
     if (inCheck) {
         avoidCaptureGoodMoves = b.filterCheck(avoidCaptureGoodMoves, c);
@@ -111,7 +111,7 @@ void LevelThree::nextMove(Colour c, Board &b, bool inCheck) const {
         return;
     }
 
-    // avoidCaptureMoves = b.getAvoidCaptureMoves(randMoves, c);
+    avoidCaptureMoves = b.getAvoidCaptureMoves(randMoves, c);
 
     if (inCheck) {
         avoidCaptureMoves = b.filterCheck(avoidCaptureMoves, c);
