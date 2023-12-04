@@ -5,6 +5,7 @@
 #include "levelone.h"
 #include "leveltwo.h"
 #include "levelthree.h"
+#include "levelfour.h"
 #include <chrono>
 typedef std::chrono::high_resolution_clock Clock;
 
@@ -61,6 +62,7 @@ int main() {
     LevelOne c1{};
     LevelTwo c2{};
     LevelThree c3{};
+    LevelFour c4{};
     try {
     while (true) {
         cin >> cmd;
@@ -149,6 +151,12 @@ int main() {
                             } else {
                                 c3.nextMove(Colour::White, b, false);
                             }
+                        } else if (whitePlayer == 4) {
+                            if (gameState == 3) {
+                                c4.nextMove(Colour::White, b, true);
+                            } else {
+                                c4.nextMove(Colour::White, b, false);
+                            }
                         }
                     } else {
                         if (blackPlayer == 0) {
@@ -176,6 +184,12 @@ int main() {
                                 c3.nextMove(Colour::Black, b, true);
                             } else {
                                 c3.nextMove(Colour::Black, b, false);
+                            }
+                        } else if (blackPlayer == 4) {
+                            if (gameState == 3) {
+                                c4.nextMove(Colour::Black, b, true);
+                            } else {
+                                c4.nextMove(Colour::Black, b, false);
                             }
                         }
                     }
