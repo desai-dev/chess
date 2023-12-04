@@ -103,24 +103,6 @@ bool King::isMoveValid(int row, int col, Board &b) {
         return false;
     }
 
-    // make sure king does not move into check (including the case that the king captures into a check) excluding opposite king check
-    Piece* tmp = theBoard[row][col];
-    theBoard[row][col] = theBoard[currentRow][currentCol];
-    theBoard[currentRow][currentCol] = new Empty(Colour::Empty);
-    theBoard[row][col]->setLocation(row, col);
-    theBoard[currentRow][currentCol]->setLocation(currentRow, currentCol);
-    bool isInCheck = IsInCheck(row, col, b);
-
-    delete theBoard[currentRow][currentCol];
-    theBoard[currentRow][currentCol] = theBoard[row][col];
-    theBoard[row][col] = tmp;
-    theBoard[currentRow][currentCol]->setLocation(currentRow, currentCol);
-    tmp = nullptr;
-
-    if (isInCheck) {
-        return false;
-    }
-
     // the move is valid if none of the above conditions are true
     return true;
 }
@@ -140,14 +122,30 @@ bool King::IsInCheck(int row, int col, Board &b) {
             }
         }
     }
-    // Check if a piece of the opposite colour can move to where the king is, the king is in check
-    for (int i = 0; i < b.getGridSize(); i++) {
-        for(int j = 0; j < b.getGridSize(); j++) {
-            if (!theBoard[i][j]->isEmpty() && (theBoard[i][j]->getColour() != this->getColour()) && theBoard[i][j]->isMoveValid(row, col, b)) {
+    // Check if an opposite-color piece (excluding pawn and king) can move to where the king is
+    for (int i = 0; i < gridSize; i++) {
+        for (int j = 0; j < gridSize; j++) {
+            if (!theBoard[i][j]->isEmpty() && theBoard[i][j]->getType() != PType::Pawn && theBoard[i][j]->getType() != PType::King &&
+                theBoard[i][j]->getColour() != this->getColour() && theBoard[i][j]->isMoveValid(row, col, b)) {
                 return true;
             }
         }
     }
+
+    // Check if there is an opposite-color pawn that can capture the king
+    int oppositePawnDirection = (this->getColour() == Colour::White) ? -1 : 1;
+    if (row + oppositePawnDirection >= 0 && row + oppositePawnDirection < gridSize) {
+        if (col - 1 >= 0 && theBoard[row + oppositePawnDirection][col - 1]->getType() == PType::Pawn &&
+            theBoard[row + oppositePawnDirection][col - 1]->getColour() != this->getColour()) {
+            return true;
+        }
+
+        if (col + 1 < gridSize && theBoard[row + oppositePawnDirection][col + 1]->getType() == PType::Pawn &&
+            theBoard[row + oppositePawnDirection][col + 1]->getColour() != this->getColour()) {
+            return true;
+        }
+    }
+
     return false;
 }
 
