@@ -37,6 +37,7 @@ class Board {
         std::vector<int> getLastMove();
         // Clears board (leaves 2 kings)
         void clear();
+        // sets the theme of the board
         void setTheme(int o);
         // Get Possible Check moves
         std::vector<std::vector<int>> getCheckMoves(std::vector<std::vector<int>> moves, Colour c);
@@ -45,6 +46,7 @@ class Board {
         // Defend Check filter for computer
         std::vector<std::vector<int>> filterCheck(std::vector<std::vector<int>> moves, Colour c);
 
+        // friend class so it can acess private members
         friend std::ostream &operator<<(std::ostream &out, const Board &b);
 
 };

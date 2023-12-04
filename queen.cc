@@ -3,8 +3,10 @@
 
 using namespace std;
 
+// creates a queen piece
 Queen::Queen(Colour colour) : Piece{colour, PType::Queen} {};
 
+// determines if queen move is valid
 bool Queen::isMoveValid(int row, int col, Board &b) {
     vector<std::vector<Piece*>> theBoard = b.getBoard();
     // initalize current row and column

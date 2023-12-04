@@ -1,5 +1,6 @@
 #include "levelthree.h"
 
+// generate next move for level three computer
 void LevelThree::nextMove(Colour c, Board &b, bool inCheck) const {
     // Generate all random moves
     std::vector<std::vector<int>> randMoves;

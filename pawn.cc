@@ -4,8 +4,10 @@
 
 using namespace std;
 
+// creates a pawn piece
 Pawn::Pawn(Colour colour) : Piece{colour, PType::Pawn} {};
 
+// determines if pawn move is valid
 bool Pawn::isMoveValid(int row, int col, Board &b) {
     vector<std::vector<Piece*>> theBoard = b.getBoard();
     vector<int> lastMove = b.getLastMove();

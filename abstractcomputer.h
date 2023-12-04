@@ -7,7 +7,7 @@ class AbstractComputer {
 
   public:
     // Virtual method for making the next move
-    //   will call the make move function from board
+    // will call the make move function from board
     virtual void nextMove(Colour c, Board &b, bool inCheck) const = 0;
     virtual ~AbstractComputer() {};
 

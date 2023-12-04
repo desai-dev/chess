@@ -3,8 +3,10 @@
 
 using namespace std;
 
+// creates a rook piece
 Rook::Rook(Colour colour) : Piece{colour, PType::Rook} {};
 
+// determines if rook move is valid
 bool Rook::isMoveValid(int row, int col, Board &b) {
     vector<vector<Piece*>> theBoard = b.getBoard();
     // initalize current row and column
@@ -62,9 +64,12 @@ bool Rook::isMoveValid(int row, int col, Board &b) {
     return true;
 }
 
+// returns hasMoved
 bool Rook::getHasMoved() const{
     return hasMoved;
 }
+
+// sets hasMoved 
 void Rook::setHasMoved(){
     hasMoved = true;
 }
