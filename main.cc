@@ -56,6 +56,7 @@ int main() {
     int whitePlayer, blackPlayer; // 0 = human, 1-4 = computer 1-4
     double whiteScore = 0;
     double blackScore = 0;
+    bool bonus= false;
     b.init();
     LevelOne c1{};
     LevelTwo c2{};
@@ -88,19 +89,19 @@ int main() {
             string time;
             double minutes = 0;
             bool hasTimeControl = false;
-            cout << "Would you like to play with time control? (y/n)" << endl;
-            cin >> time;
-            if (time[0] == 'Y' || time[0] == 'y') {
-                hasTimeControl = true;
-                cout << "How many minutes: ";
-                cin >> minutes;
+            if (bonus) {
+                cout << "Would you like to play with time control? (y/n)" << endl;
+                cin >> time;
+                if (time[0] == 'Y' || time[0] == 'y') {
+                    hasTimeControl = true;
+                    cout << "How many minutes: ";
+                    cin >> minutes;
+                }
             }
+            
             double totalSeconds = minutes * 60;
             double whiteTime = totalSeconds;
             double blackTime = totalSeconds;
-            
-
-
 
 
             // Start playing
@@ -312,7 +313,7 @@ int main() {
         } else if (cmd == "init") {
             b.init();
             cout << b;
-        } else if (cmd == "theme") {
+        } else if (cmd == "theme" && bonus) {
             int offset = 0;
             cin >> offset;
             if (offset == 0) {
@@ -326,8 +327,9 @@ int main() {
             } else {
                 cout << "Invalid theme (0-3)" << endl;
             }
-        } 
-        else {
+        } else if (cmd == "bonus") {
+            bonus = !bonus;
+        } else {
             getline(cin, cmd);
             cout << "Command not found, please re-enter a command:" << endl;
         }
