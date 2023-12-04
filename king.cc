@@ -103,24 +103,6 @@ bool King::isMoveValid(int row, int col, Board &b) {
         return false;
     }
 
-    // make sure king does not move into check (including the case that the king captures into a check) excluding opposite king check
-    Piece* tmp = theBoard[row][col];
-    theBoard[row][col] = theBoard[currentRow][currentCol];
-    theBoard[currentRow][currentCol] = new Empty(Colour::Empty);
-    theBoard[row][col]->setLocation(row, col);
-    theBoard[currentRow][currentCol]->setLocation(currentRow, currentCol);
-    bool isInCheck = IsInCheck(row, col, b);
-
-    delete theBoard[currentRow][currentCol];
-    theBoard[currentRow][currentCol] = theBoard[row][col];
-    theBoard[row][col] = tmp;
-    theBoard[currentRow][currentCol]->setLocation(currentRow, currentCol);
-    tmp = nullptr;
-
-    if (isInCheck) {
-        return false;
-    }
-
     // the move is valid if none of the above conditions are true
     return true;
 }
