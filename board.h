@@ -29,6 +29,10 @@ class Board {
         bool checkValid();
         // determines if a player has won = 1, stalemate = 2, nothing = 0
         int getGameState(Colour c);
+        // checks if king with given colour is in check
+        bool isKingInCheck(Colour c);
+        // checks if king with given colour is in check after the given move is performed
+        bool isKingInCheckAfterMove(Colour c, int fromRow, int fromCol, int toRow, int toCol);
         // returns the 2D vector of Piece pointers
         std::vector<std::vector<Piece*>> getBoard();
         // returns gridsize

@@ -103,6 +103,11 @@ bool King::isMoveValid(int row, int col, Board &b) {
         return false;
     }
 
+    // make sure king is not under check after move
+    if (b.isKingInCheckAfterMove(this->getColour(), currentRow, currentCol, row, col)) {
+        return false;
+    }   
+
     // the move is valid if none of the above conditions are true
     return true;
 }

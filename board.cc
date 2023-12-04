@@ -31,9 +31,9 @@ Board::~Board() {
 bool Board::makeMove(int fromRow, int fromCol, int toRow, int toCol, Colour c) {
     // if you're moving a piece of your own colour, and its a valid move, then make the move
     if (c == theBoard[fromRow][fromCol]->getColour() && theBoard[fromRow][fromCol]->isMoveValid(toRow, toCol, *this)) {
-        // save piece in case you need to undo move
-        Piece* tmp = theBoard[toRow][toCol];
-        // variables for checking en passant
+        // if king is in check after move, return false
+        if (isKingInCheckAfterMove(c, fromRow, fromCol, toRow, toCol)) return false;
+
         bool enpassant = false;
 
         // check for en passant
@@ -49,6 +49,7 @@ bool Board::makeMove(int fromRow, int fromCol, int toRow, int toCol, Colour c) {
         }
 
         // move the piece to its destination, create a empty piece where the old piece left
+        delete theBoard[toRow][toCol];
         theBoard[toRow][toCol] = theBoard[fromRow][fromCol];
         theBoard[fromRow][fromCol] = new Empty(Colour::Empty);
         theBoard[fromRow][fromCol]->attach(td);
@@ -57,26 +58,6 @@ bool Board::makeMove(int fromRow, int fromCol, int toRow, int toCol, Colour c) {
         // update locations of moved piece and new empty piece
         theBoard[fromRow][fromCol]->setLocation(fromRow, fromCol);
         theBoard[toRow][toCol]->setLocation(toRow, toCol);
-
-        // check if a pinned piece was moved
-        for (int i = 0; i < gridSize; i++) {
-            for (int j = 0; j < gridSize; j++) {
-                // if the move caused the king to be in check, undo the move and return false 
-                if (theBoard[i][j]->getType() == PType::King && theBoard[i][j]->getColour() == c && theBoard[i][j]->IsInCheck(i, j, *this)) {
-                    delete theBoard[fromRow][fromCol];
-                    theBoard[fromRow][fromCol] = theBoard[toRow][toCol];
-                    theBoard[toRow][toCol] = tmp;
-                    tmp = nullptr;
-
-                    // update locations
-                    theBoard[fromRow][fromCol]->setLocation(fromRow, fromCol);
-                    theBoard[toRow][toCol]->setLocation(toRow, toCol);
-                    return false;
-                }
-            }
-        }
-        // if a pinned piece was not moved, then delete the memory for the capture piece (or empty square)
-        delete tmp;
         
         // if the moved piece was a king or rook, the set the hasMoved property to true
         if (theBoard[toRow][toCol]->getType() == PType::King || theBoard[toRow][toCol]->getType() == PType::Rook) {
@@ -169,7 +150,7 @@ std::vector<std::vector<Piece*>> Board::getBoard() {
     return theBoard;
 }
 
-// get hte gridSize
+// get the gridSize
 int Board::getGridSize() {
     return gridSize;
 }
@@ -304,7 +285,7 @@ bool Board::checkValid() {
     // if any of the kings are in check return false
     for (int i = 0; i < gridSize; i++) {
         for (int j = 0; j < gridSize; j++) {
-            if (theBoard[i][j]->getType() == PType::King && theBoard[i][j]->IsInCheck(i, j, *this)) {
+            if (theBoard[i][j]->getType() == PType::King && this->isKingInCheck(theBoard[i][j]->getColour())) {
                 return false;
             }
         }
@@ -362,7 +343,9 @@ int Board::getGameState(Colour c) {
             }
         }
     }
-
+    for (int i = 0; i < moves.size(); i++) {
+        cout << moves[i][0] << moves[i][1] << moves[i][2] << moves[i][3] << endl;
+    }
     // If no moves can be made, stalemate
     if (moves.size() == 0) {
         stalemate = true;
@@ -371,7 +354,7 @@ int Board::getGameState(Colour c) {
     // If king in current position is in check
     for (int i = 0; i < gridSize; i++) {
         for (int j = 0; j < gridSize; j++) {
-            if (theBoard[i][j]->getType() == PType::King && theBoard[i][j]->getColour() == c && theBoard[i][j]->IsInCheck(i, j, *this)) {
+            if (theBoard[i][j]->getType() == PType::King && theBoard[i][j]->getColour() == c && this->isKingInCheck(c)) {
                 inCheck = true;
                 break;
             }
@@ -393,7 +376,7 @@ int Board::getGameState(Colour c) {
         theBoard[currentRow][currentCol]->setLocation(currentRow, currentCol);
         for (int j = 0; j < gridSize; j++) {
             for (int k = 0; k < gridSize; k++) {
-                if (theBoard[j][k]->getType() == PType::King && theBoard[j][k]->getColour() == c && !theBoard[j][k]->IsInCheck(j, k, *this)) {
+                if (theBoard[j][k]->getType() == PType::King && theBoard[j][k]->getColour() == c && !this->isKingInCheck(c)) {
                     blockCheck = true;
                 }
             }
@@ -413,6 +396,80 @@ int Board::getGameState(Colour c) {
         return 3; // in check
     }
     return 0;
+}
+
+// return true if king of colour c is in check, false otherwise
+bool Board::isKingInCheck(Colour c) {
+    // get the row and coloumn of the king
+    int row = -1;
+    int col = -1;
+    for (int i = 0; i < gridSize; i++) {
+        for (int j = 0; j < gridSize; j++) {
+            if (theBoard[i][j]->getType() == PType::King && theBoard[i][j]->getColour() == c) {
+                row = i;
+                col = j;
+            }
+        }
+    }
+
+    // Check if opposite king is beside king
+    for (int i = -1; i <= 1; i++) {
+        for (int j = -1; j <= 1; j++) {
+            int targetRow = row + i;
+            int targetCol = col + j;
+            if (targetRow >= 0 && targetRow < gridSize && targetCol >= 0 && targetCol < gridSize &&
+                theBoard[targetRow][targetCol]->getType() == PType::King &&
+                theBoard[targetRow][targetCol]->getColour() != theBoard[row][col]->getColour()) {
+                return true;
+            }
+        }
+    }
+
+    // Check if an opposite-color piece (excluding king) can move to where the king is
+    for (int i = 0; i < gridSize; i++) {
+        for (int j = 0; j < gridSize; j++) {
+            if (!theBoard[i][j]->isEmpty() && theBoard[i][j]->getType() != PType::King &&
+                theBoard[i][j]->getColour() != theBoard[row][col]->getColour() && theBoard[i][j]->isMoveValid(row, col, *this)) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+// returns true if king is in check afer given move, and false otherwise
+bool Board::isKingInCheckAfterMove(Colour c, int fromRow, int fromCol, int toRow, int toCol) {
+    bool ret = false;
+
+    Piece *tmp = theBoard[toRow][toCol];
+
+    // move piece to where it wants to go 
+    theBoard[toRow][toCol] = theBoard[fromRow][fromCol];
+    theBoard[fromRow][fromCol] = new Empty(Colour::Empty);
+    theBoard[fromRow][fromCol]->attach(td);
+    theBoard[fromRow][fromCol]->attach(gd);
+
+    // update locations of moved piece and new empty piece
+    theBoard[fromRow][fromCol]->setLocation(fromRow, fromCol);
+    theBoard[toRow][toCol]->setLocation(toRow, toCol);
+    cout << "B4" << endl;
+    // if king is in check we want to return true
+    if (isKingInCheck(c)) {
+        ret = true;
+    }
+    cout << "AFTER" << endl;
+
+    // undo move before returning; delete empty piece, and move piece back to where it was
+    delete theBoard[fromRow][fromCol];
+    theBoard[fromRow][fromCol] = theBoard[toRow][toCol];
+    theBoard[toRow][toCol] = tmp;
+    tmp = nullptr;
+    // update locations
+    theBoard[fromRow][fromCol]->setLocation(fromRow, fromCol);
+    theBoard[toRow][toCol]->setLocation(toRow, toCol);
+
+    return ret;
 }
 
 // get all the moves that check the opposing king
@@ -435,7 +492,7 @@ std::vector<std::vector<int>> Board::getCheckMoves(std::vector<std::vector<int>>
         for (int j = 0; j < gridSize; j++) {
             for (int k = 0; k < gridSize; k++) {
                 // if the move checks the king, add it to vector
-                if (theBoard[j][k]->getType() == PType::King && theBoard[j][k]->getColour() != c && theBoard[j][k]->IsInCheck(j, k, *this)) {
+                if (theBoard[j][k]->getType() == PType::King && theBoard[j][k]->getColour() != c && this->isKingInCheck(theBoard[j][k]->getColour())) {
                     std::vector<int> m = {currentRow, currentCol, row, col};
                     checkMoves.emplace_back(m);
                 }
@@ -520,7 +577,7 @@ std::vector<std::vector<int>> Board::filterCheck(std::vector<std::vector<int>> m
         // check if a pinned piece was moved
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
-                if (theBoard[i][j]->getType() == PType::King && theBoard[i][j]->getColour() == c && !theBoard[i][j]->IsInCheck(i, j, *this)) {
+                if (theBoard[i][j]->getType() == PType::King && theBoard[i][j]->getColour() == c && !this->isKingInCheck(c)) {
                     vector<int> m = {fromRow, fromCol, toRow, toCol};
                     defendCheck.emplace_back(m);
                 }
