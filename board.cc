@@ -533,7 +533,7 @@ std::vector<std::vector<int>> Board::getAvoidCaptureMoves(std::vector<std::vecto
         }
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
-                if (theBoard[i][j]->getType() == PType::King && theBoard[i][j]->getColour() == c && theBoard[i][j]->IsInCheck(i, j, *this)) {
+                if (theBoard[i][j]->getType() == PType::King && theBoard[i][j]->getColour() == c && this->isKingInCheck(c)) {
                     canCapture = true;
                 }
             }

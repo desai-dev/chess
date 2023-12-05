@@ -52,7 +52,4 @@ bool Piece::getHasMoved() const{
 // set hasMoved of piece
 void Piece::setHasMoved() {}
 
-// determines if the king is in check or not
-bool Piece::IsInCheck(int row, int col, Board &b) {return false;}
-
 Piece::~Piece() { }

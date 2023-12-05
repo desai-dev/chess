@@ -112,49 +112,6 @@ bool King::isMoveValid(int row, int col, Board &b) {
     return true;
 }
 
-// returns true if king is in check and false otherwise
-bool King::IsInCheck(int row, int col, Board &b) {
-    vector<std::vector<Piece*>> theBoard = b.getBoard();
-    int gridSize = b.getGridSize();
-    // Check if opposite king is beside king
-    for (int i = -1; i <= 1; i++) {
-        for (int j = -1; j <= 1; j++) {
-            int targetRow = row + i;
-            int targetCol = col + j;
-            if (targetRow >= 0 && targetRow < gridSize && targetCol >= 0 && targetCol < gridSize &&
-                theBoard[targetRow][targetCol]->getType() == PType::King &&
-                theBoard[targetRow][targetCol]->getColour() != this->getColour()) {
-                return true;
-            }
-        }
-    }
-    // Check if an opposite-color piece (excluding pawn and king) can move to where the king is
-    for (int i = 0; i < gridSize; i++) {
-        for (int j = 0; j < gridSize; j++) {
-            if (!theBoard[i][j]->isEmpty() && theBoard[i][j]->getType() != PType::Pawn && theBoard[i][j]->getType() != PType::King &&
-                theBoard[i][j]->getColour() != this->getColour() && theBoard[i][j]->isMoveValid(row, col, b)) {
-                return true;
-            }
-        }
-    }
-
-    // Check if there is an opposite-color pawn that can capture the king
-    int oppositePawnDirection = (this->getColour() == Colour::White) ? -1 : 1;
-    if (row + oppositePawnDirection >= 0 && row + oppositePawnDirection < gridSize) {
-        if (col - 1 >= 0 && theBoard[row + oppositePawnDirection][col - 1]->getType() == PType::Pawn &&
-            theBoard[row + oppositePawnDirection][col - 1]->getColour() != this->getColour()) {
-            return true;
-        }
-
-        if (col + 1 < gridSize && theBoard[row + oppositePawnDirection][col + 1]->getType() == PType::Pawn &&
-            theBoard[row + oppositePawnDirection][col + 1]->getColour() != this->getColour()) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
 // returns getHasMoved
 bool King::getHasMoved() const{
     return hasMoved;

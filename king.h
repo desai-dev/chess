@@ -9,8 +9,6 @@ class King : public Piece {
     King(Colour colour);
     // determines if move made on king is valid
     bool isMoveValid(int row, int col, Board &b) override;
-    // determines if the king is in check or not
-    bool IsInCheck(int row, int col, Board &b);
     // returns getHasMoved
     bool getHasMoved() const override;
     // sets getHasMoved
