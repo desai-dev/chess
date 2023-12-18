@@ -1,4 +1,4 @@
-# CS246Chess
+# Chess
 
 
 
